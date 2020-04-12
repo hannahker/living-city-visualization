@@ -1,1 +1,1 @@
-"# living-city-visualization" 
+Group project for CASA Digital Visualization module
