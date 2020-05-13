@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>Animal Movement</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
+<script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>   
+<script charset="utf-8" src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+
+	
+</style>
+</head>   
+    
+<body>
+    
+    <style>
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .map-overlay {
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        position: absolute;
+        width: 20%;
+        top: 0;
+        left: 0;
+        padding: 30px;
+        }
+
+</style>
+    
+<div id="map"></div>
+    
+<div class="map-overlay">
+    <select id="eagle">  
+        <option>- Select -</option>
+        <option>Coyotes in Albany</option>
+        <option>Snakes in Memphis</option>
+        <option>Fishers in Albany</option>
+    </select>
+</div>
+    
+
+<script>
+   
+var accent = '#1b4a1d'
+
+// update the map by cutting the coordinates array     
+function updateMap(newtime, data){
+    
+    // cut the coordinates based on the time input 
+    newData = data.slice(0, newtime);
+    
+    // new data to add to the map
+    data = {
+    'type': 'Feature',
+    'properties': {},
+    'geometry': {
+    'type': 'LineString',
+    'coordinates': newData
+    }}
+    
+    // update the data on the map
+    map.getSource('route').setData(data);
+
+}
+    
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFoa2VyIiwiYSI6ImNpdHEzcndkajAwYmwyeW1zd2UxdTAwMnMifQ.hYglJOOC0Mhq7xNYOxc6qg';
+    
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/hannahker/cka393ggw06m71ilam9a36pqn',
+    center: [-123.116226, 49.246292],
+    zoom: 4
+});
+    
+// ------------------------------------------------ WHEN THE MAP LOADS
+map.on('load', function() {
+    
+        // add scale bar to the map
+        map.addControl(new mapboxgl.ScaleControl());
+    
+        document.getElementById("eagle").onchange = function() {
+            
+        try {
+            map.removeLayer(layerid)
+            map.removeSource(layerid)
+        }
+        catch(error) {
+            console.error;
+        }
+            
+    
+        // get the selected text from the dropdown menu
+        var e = document.getElementById("eagle");
+		var result = e.options[e.selectedIndex].text;
+        console.log(result)
+        if(result == ('Coyotes in Albany')){
+            tomap = 'coyotes.geojson'
+        }
+        if(result == ('Snakes in Memphis')){
+            tomap = 'snakes.geojson'
+        }
+        if(result == ('Fishers in Albany')){
+            tomap = 'fisher.geojson'
+        }
+            
+        // ** help from class tutorial: example here https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
+        // access the data, stored in Github repo, published with Github Pages
+        d3.json(tomap, function(err, data) {         
+            
+            if (err) throw err;
+            
+            
+            // get all of the unique animals
+            unique = []
+            for(var i=0; i<data.features.length; i++){
+                    if(!unique.includes(data.features[i].properties.animalID)){
+                        unique.push(data.features[i].properties.animalID)
+                    }
+                }
+            
+
+                    
+                    var selected = []              
+                    for(var i=0; i<data.features.length; i++){
+                        if(data.features[i].properties.animalID == unique[i]){
+                            selected.push(data.features[i])
+                        }
+                    }
+
+                    // loop through all elements to get coordinates list for that eagle
+                    var coordinates = []
+                    for(var i = 0; i<data.features.length; i++){
+                       coordinates.push(data.features[i].geometry.coordinates)    
+                    }
+                
+                    var ids = []
+                    for(var i = 0; i<data.features.length; i++){
+                       ids.push(data.features[i].properties.animalID)    
+                    }
+                    console.log(ids)
+                    console.log(coordinates)
+                
+                    layerid = 'animals'
+
+                    // add the selected data to the map
+                    map.addSource(layerid, {
+                        'type': 'geojson',
+                        'lineMetrics': true,
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                            'type': 'LineString',
+                            'coordinates': coordinates
+                            }
+                        }
+                    });
+                    map.addLayer({
+                        'id': layerid,
+                        'type': 'line',
+                        'source': layerid,
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                            },
+                            'paint': {
+                                'line-color': accent,
+                                'line-width': 4,
+                                'line-opacity': 0.6
+                            }
+
+                    });
+                
+                // zoom to the bounds of the selected data
+                // from https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
+                var bounds = coordinates.reduce(function(bounds, coord) {
+                    return bounds.extend(coord);
+                    }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+                map.fitBounds(bounds, {
+                    padding: 20
+                });  
+                
+                // ------------------------------------------------ WHEN THE SLIDER IS MOVED
+                // help from https://docs.mapbox.com/mapbox-gl-js/example/timeline-animation/
+                // update the data on the map by time  
+                document.getElementById('slider').addEventListener('input', function(e) {
+                    updateMap(e.target.value, coordinates);                   
+                    });  
+                
+
+        });  
+        }
+});
+
+    
+</script>
+ 
+</body>
+</html>

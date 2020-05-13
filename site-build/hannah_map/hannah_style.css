@@ -1,0 +1,20 @@
+ /* Border for the selection button */    
+.button{
+    padding:0.35em 1.2em;
+    background-color: darkgreen;
+    color: white;
+    width:200px;
+    opacity: 0.8;
+    border-style: solid;
+    border-width: thin;
+    border-width: 1px;
+    border-color: darkgreen;
+}
+.button:hover{
+    opacity: 1; 
+    cursor: pointer;
+}
+.small{
+    font-size: 1em;
+    font-weight: 300;
+}

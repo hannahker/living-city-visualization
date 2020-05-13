@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
+    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>   
+    <script charset="utf-8" src="https://d3js.org/d3.v4.min.js"></script>
+
+  <title>Wildlife in the City</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark green fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Home</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#map1">Biodiversity</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#map2">Movement</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#map3">Observations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#map4">Another Map</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#contact">Credits</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="green text-white">
+    <div class=" container text-center">
+      <h1>Wildlife in the City</h1>
+      <p class="lead">A digital visualization group project</p>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2>Introduction</h2>
+          <p class="lead">Why do we care about this project and why does it matter? Give some key background facts with non-cartographic visualizations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <div id="map1" class="bg-light"> 
+        <div class=flex>
+            <div class='infobox'><h3>Biodiversity and urbanization</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
+                <!--------------------> 
+                
+                <!-- PUT SIDEBAR HERE --> 
+                
+                <!-------------------->
+            
+            
+            </div>
+            <div id='map-container1' class='mapbox'>
+                <!--------------------> 
+                
+                <!-- PUT A MAP HERE --> 
+                
+                <!-------------------->
+            </div>
+        </div>      
+    </div>
+    <div class='fill green'></div>
+    
+    <div id="map2" class='bg-light'> 
+        <div class=flex>
+            <div id='map-container2' class='mapbox green'>
+                <!--------------------> 
+                <!-- PUT A MAP HERE --> 
+                <script src='hannah_map/hannah_map.js'></script>
+                                
+                <!-------------------->
+            </div>
+            <div class='infobox'><h3>Animal movement in urban environments</h3><p class="small">Here we can put a description of this map and why we are including it in this work.</p>
+                <!-------------------->                 
+                <!-- PUT SIDEBAR HERE --> 
+                
+                <link href="hannah_map/hannah_style.css" rel="stylesheet">
+
+                <div class="toggle">
+                    <select id="animals" class="button small">  
+                        <option class='small'>- Select -</option>
+                        <option class='small'>Coyotes in Albany</option>
+                        <option class='small'>Snakes in Memphis</option>
+                        <option class='small'>Fishers in Albany</option>
+                    </select>
+                </div>
+                
+                <!-------------------->
+            </div>        
+        </div>      
+    </div>
+    
+    <div class='fill green'></div>
+    
+    <div id="map3" class="bg-light"> 
+        <div class=flex>
+            <div class='infobox'><h3>Mammal observations in London</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
+                <!--------------------> 
+                
+                <!-- PUT SIDEBAR HERE --> 
+                
+                <!-------------------->
+            </div>
+            <div id='map-container1' class='mapbox'>
+                <!--------------------> 
+                
+                <!-- PUT A MAP HERE --> 
+                
+                <!-------------------->
+            </div>
+        </div>      
+    </div>
+    <div class='fill green'></div>
+    
+    <div id="map4" class='bg-light'> 
+        <div class=flex>
+            <div id='map-container2' class='mapbox'>
+                <!--------------------> 
+                
+                <!-- PUT A MAP HERE --> 
+                
+                <!-------------------->
+            </div>
+            <div class='infobox'><h3>Some other map</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
+                <!--------------------> 
+                
+                <!-- PUT SIDEBAR HERE --> 
+                
+                <!-------------------->
+            </div>        
+        </div>      
+    </div>
+    
+    <div class='fill green'></div>
+
+    <section id="contact">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 mx-auto">
+              <h2>Credits</h2>
+              <p class="lead">Developed by Hannah Ker, Fu Yu, Jingwen Huang, and Wanzhi Xie. This website was built using a template adapted from <a href='https://startbootstrap.com/previews/scrolling-nav/'>StartBootstrap.</a> Data is from X, Y, Z. Maps are powered by X.</p>
+            </div>
+          </div>
+    </div>
+    </section>
+
+  <!-- Footer -->
+  <footer class="py-5 green">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; CASA Group 1, 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+
+</body>
+
+</html>
