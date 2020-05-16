@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Urbanization and habitats
+
+    </title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css" rel="stylesheet" />
+    <link href='cw_styles.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
+
+</head>
+
+<body>
+<div id="map"></div>
+<div class="map-overlay" id="title"><h5 style="font-size: 22px">Urbanization and Habitats (2017)</h5>
+
+        <p class="credit">Urbanization data: <a href="https://themasites.pbl.nl/tridion/en/themasites/hyde/download/index-2.html">History Database of the Global Environment</a>
+            <br>Habitats data: <a href="https://data.unep-wcmc.org/datasets/44">Ocean Data Viewer</a>
+        </p>
+
+</div>
+<div class="map-overlay" id='legendHabitat' ><h5 >Habitat</h5></div>
+<div class="map-overlay" id='legendUrban' ><h5 >Habitat</h5></div>
+<div class="map-overlay" id="layerControl">
+    <h3>Layer</h3>
+    <div class='row' id='filters'>
+        <input id='likely' type='checkbox' name='layer' value='likely' checked='checked'>
+        <label for='likely'>Likely CH</label>
+        <input id='potential' type='checkbox' name='layer' value='potential'checked='checked'>
+        <label for='potential'>Potential CH</label>
+        <h3 style="margin-bottom: -10px;margin-top: 5px">---------------------</h3>
+        <input id='Urbanization' type='checkbox' name='layer' value='Urbanization'checked='checked'>
+        <label for='Urbanization'>Urbanization</label>
+    </div>
+</div>
+<link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.css"
+        type="text/css"
+/>
+<div id="geocoder" class="geocoder"></div>
+
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY29ubm9yNjY2IiwiYSI6ImNrNWk1aDEwbDA4MWgzbW5wZGJocGpscW4ifQ.OixjWYY1xhduPq7A8swzPw';
+
+    var currentLegend=document.getElementById('legend');
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/connor666/cka70k1kh0jdp1it7xqf9xfip',
+        center: [120, 30],
+        zoom: 4
+    });
+    var geocoder = new MapboxGeocoder({ // load a Geocoder
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        placeholder:'Search for countries',
+        language:'EN',
+        collapsed:Boolean(true),
+        clearAndBlurOnEsc:Boolean(true),
+        clearOnBlur:Boolean(true),
+        types:'country',
+    });
+    // add Geocoder to map
+    document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+    map.on('load', function() {
+
+        function setLegend(layers,colors,legendID) {// Function to set legend
+            for (i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                var color = colors[i];
+                var item = document.createElement('div');
+                var key = document.createElement('span');
+                key.className = 'legend-key';
+                key.style.backgroundColor = color;
+
+                var value = document.createElement('span');
+                value.innerHTML = layer;
+                item.appendChild(key);
+                item.appendChild(value);
+                legendID.appendChild(item);
+            }
+        }
+
+        function setLayer(layername){
+            if (layername=='potential'){
+                var pp = map.getPaintProperty('habitat','fill-opacity');
+                pp[2]=0,pp[6]=0.6
+                map.setPaintProperty('habitat','fill-opacity',pp);
+            }
+            else if(layername=='likely'){
+                var pp = map.getPaintProperty('habitat','fill-opacity');
+                pp[2]=0,pp[4]=0.6
+                map.setPaintProperty('habitat','fill-opacity',pp);
+            }
+            else if(layername=='Urbanization'){
+                var pp = map.getPaintProperty('uopp','fill-opacity');
+                pp[2]=0,pp[4]=0.6,pp[6]=0.6;
+                map.setPaintProperty('uopp','fill-opacity',pp);
+            }
+        }
+        setLegend(['Likely CH','Potential CH'],["#006837","#78c679"],legendHabitat);
+        setLegend(['1-20','20-40','40-60','60-70','80+'],["#fed976","#feb24c","#fc4e2a","#e31a1c","#bd0026"],legendUrban)
+
+
+        map.addLayer({// control the filled color layer
+            id: 'habitat',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://connor666.6jjmvfgn' // Your Mapbox tileset Map ID
+            },
+
+            'source-layer': 'habitat2-2c2rwk', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'fill-color': ["step",
+                    ["get","GRIDCODE"],"#ffffcc",1,"#c2e699",2,"#006837",3,"#78c679"],
+                'fill-opacity': ["step",
+                    ["get","GRIDCODE"],0.0,2,0.6,3,0.6],
+            },
+
+        });
+
+        map.addLayer({// control the filled color layer
+            id: 'uopp',
+            type: 'fill',
+            source: {
+                type: 'vector',
+                url: 'mapbox://connor666.82g4ngfj' // Your Mapbox tileset Map ID
+            },
+
+            'source-layer': '100_urban-1gp56j', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'fill-color': ["step",
+                    ["get","GRIDCODE"],"#ffeda0",0,"#fed976",20,"#feb24c",40,"#fc4e2a",60,"#e31a1c",80,"#bd0026"],
+                'fill-opacity': ["step",
+                    ["get","GRIDCODE"],0.0,2,0.6,20,0.6],
+            },
+
+        });
+
+        map.addLayer({// control the hover layer
+            id: 'lahighlight',
+            type: 'line',
+            source: {
+                type: 'vector',
+                url: 'mapbox://connor666.82g4ngfj' // Your Mapbox tileset Map ID
+            },
+            'source-layer': '100_urban-1gp56j', // name of tilesets
+            'layout': {
+                'visibility': 'visible'
+            },
+            paint: {
+                'line-color': '#adf',
+                'line-width': 2
+            },
+            filter: ['==','name','empty']
+        });
+        document.getElementById('filters').addEventListener('change', function(e) {// control the layer
+            var label=document.getElementById("filters");
+            var pph = map.getPaintProperty('habitat','fill-opacity');
+            var ppu = map.getPaintProperty('uopp','fill-opacity');
+            pph[2]=0,pph[4]=0,pph[6]=0;
+            ppu[2]=0,ppu[4]=0,ppu[6]=0;
+            map.setPaintProperty('habitat','fill-opacity',pph);
+            map.setPaintProperty('uopp','fill-opacity',ppu);
+            for (var i=0; i< label.children.length;i++){
+                if (label.children[i].checked==true){
+                    setLayer(label.children[i].value)
+                }
+                }
+        });
+
+        var mypopup = new mapboxgl.Popup({offset:[120,50],closeButton: false});// Creat pop up
+
+        map.on('mouseenter', 'uopp', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves and remove the popup window.
+        map.on('mouseleave', 'uopp', function () {
+            map.getCanvas().style.cursor = '';
+            mypopup.remove();
+        });
+
+        map.on('mousemove', function(e) {// creat the pop up once the mouse move
+            var la = map.queryRenderedFeatures(e.point, {
+                layers: ['uopp']
+            });
+
+            if (la.length==1) {// if the mouse is inside the Geo polygon , there will a hover and pop up
+                if (la[0].properties['GRIDCODE']!=0){
+                map.setFilter('lahighlight', ['==','ID',la[0].properties['ID']]);
+                mypopup
+                    .setLngLat(e.lngLat)
+                    .setHTML("<h3>" +'Urbanization'+ "</h3>"+ "<br />"+'built-up area: '+la[0].properties['GRIDCODE']+'%')
+                    .addTo(map);
+                }
+                else {// there will be no hover is not inside the polygon
+                    map.setFilter('lahighlight', ['==','NAME','null']);
+                    mypopup.remove();
+                    console.log('No features');}
+
+            } else {// there will be no hover is not inside the polygon
+                map.setFilter('lahighlight', ['==','NAME','null']);
+                console.log('No features');
+            }
+
+        });
+    })
+</script>
+
+
+</body>
+</html>
