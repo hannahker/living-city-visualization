@@ -45,7 +45,6 @@
 <div id="geocoder" class="geocoder"></div>
 
 <script>
-
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29ubm9yNjY2IiwiYSI6ImNrNWk1aDEwbDA4MWgzbW5wZGJocGpscW4ifQ.OixjWYY1xhduPq7A8swzPw';
 
     var currentLegend=document.getElementById('legend');
@@ -53,8 +52,8 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/connor666/cka70k1kh0jdp1it7xqf9xfip',
-        center: [120, 30],
-        zoom: 4
+        center: [117, 30],
+        zoom: 3
     });
     var geocoder = new MapboxGeocoder({ // load a Geocoder
         accessToken: mapboxgl.accessToken,

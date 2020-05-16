@@ -76,26 +76,91 @@
 
     <div id="map1" class="bg-light">
         <link rel="stylesheet" href="yufu_map/cw_styles.css">
-        <div class=flex>
-            <div class='infobox'><h3>Biodiversity and urbanization</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
-                <!--------------------> 
-                
-                <!-- PUT SIDEBAR HERE -->
-
-                <!-------------------->
-            
-            
-            </div>
+        <div class=flex style="flex-direction: row-reverse">
             <div id='map-container1' class='mapbox'>
 
                 <!-------------------->
-                <iframe align="center" width="100%" height="100%" src="yufu_map/habitat.html" frameborder="0"></iframe>
+                <iframe align="center" width="100%" height="100%" src="yufu_map/habitat.html" frameborder="0" id="yufumap"></iframe>
 
                 <!-- PUT A MAP HERE -->
 
-                
+
                 <!-------------------->
             </div>
+
+            <div id="features" class='infobox'><h3>Biodiversity and urbanization</h3>
+
+                <section id="China" style="position: relative; top: -5%" class="active">
+                <h5>China</h5>
+                <p>some words</p>
+                </section>
+
+                <section id="UK" style="position: relative; top: 0%">
+                    <h5>UK</h5>
+                    <p>some words</p>
+                </section>
+
+                <section id="USA" style="position: relative; top: 0%">
+                    <h5>USA</h5>
+                    <p>some words</p>
+                </section>
+
+                <!-------------------->
+                <script>
+
+                    var chapters={
+                        'China':{
+                            center: [117, 30],
+                            zoom: 3
+                        },
+                        'UK':{
+                            center:[-2,53],
+                            zoom:5
+                        },
+                        'USA':{
+                            center:[-98,35],
+                            zoom:3.5
+                        }
+                    };
+                    setTimeout(function () {
+                        yufumap=document.getElementById('yufumap').contentWindow['map'];
+                    },1000);
+
+                    features.onscroll = function() {
+                        var chapterNames = Object.keys(chapters);
+                        for (var i = 0; i < chapterNames.length; i++) {
+                            var chapterName = chapterNames[i];
+                            if (isElementOnScreen(chapterName)) {
+                                setActiveChapter(chapterName);
+                                break;
+                            }
+                        }
+                    };
+                    var activeChapterName = 'China';
+                    function setActiveChapter(chapterName) {
+                        if (chapterName === activeChapterName) return;
+
+                        yufumap.flyTo(chapters[chapterName]);
+
+                        document.getElementById(chapterName).setAttribute('class', 'active');
+                        document.getElementById(activeChapterName).setAttribute('class', '');
+
+                        activeChapterName = chapterName;
+                    }
+
+                    function isElementOnScreen(id) {
+                        var element = document.getElementById(id);
+                        var bounds = element.getBoundingClientRect();
+                        return bounds.top < window.innerHeight && bounds.bottom > 200;
+                    }
+                </script>
+                <!-- PUT SIDEBAR HERE -->
+
+                <!-------------------->
+
+
+            </div>
+
         </div>      
     </div>
     <div class='fill green'></div>
