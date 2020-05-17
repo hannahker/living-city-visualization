@@ -60,6 +60,11 @@
     <div class=" container text-center">
       <h1>Wildlife in the City</h1>
       <p class="lead">A digital visualization group project</p>
+        <div id='icons' class='flex'>
+            <div class='icon'><img src="media/squirrel.png" alt="Nature" class="responsive"></div>
+            <div class='icon'><img src="media/city.png" alt="Nature" class="responsive"></div>
+            <div class='icon'><img src="media/fox.png" alt="Nature" class="responsive"></div>
+        </div>
     </div>
   </header>
 
@@ -167,11 +172,12 @@
     
     <div id="map2" class='bg-light'> 
         <div class=flex>
-            <div id='map-container2' class='mapbox green'>
+            <div id='map-container2' class='mapbox a1'>
                 <!--------------------> 
                 <!-- PUT A MAP HERE --> 
                 <script src='hannah_map/hannah_map.js'></script>
-
+                <div id='time' class='mid'></div>
+                                
                 <!-------------------->
             </div>
             <div class='infobox'><h3>Animal movement in urban environments</h3><p class="small">Here we can put a description of this map and why we are including it in this work.</p>
@@ -180,14 +186,19 @@
                 
                 <link href="hannah_map/hannah_style.css" rel="stylesheet">
 
-                <div class="toggle">
-                    <select id="animals" class="button small">  
-                        <option class='small'>- Select -</option>
+                <div class='toggle'>
+                    <select id="animals" class="button-h small">  
+                        <option class='small'>- Select an animal -</option>
                         <option class='small'>Coyotes in Albany</option>
                         <option class='small'>Snakes in Memphis</option>
                         <option class='small'>Fishers in Albany</option>
                     </select>
+                <div id='animate' class='button-h small' onclick="animatePath()">Animate</div>
                 </div>
+                   
+ 
+                <div id='description' class='small'></div>
+                <div id='details' class='small'></div>
                 
                 <!-------------------->
             </div>        

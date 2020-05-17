@@ -1,20 +1,39 @@
  /* Border for the selection button */    
-.button{
+.button-h{
     padding:0.35em 1.2em;
-    background-color: darkgreen;
+    background-color: #FF6F59;
     color: white;
     width:200px;
+    height: 40px;
     opacity: 0.8;
     border-style: solid;
     border-width: thin;
     border-width: 1px;
-    border-color: darkgreen;
+    border-color: #FF6F59;
+    margin-top: 10px;
+    display: inline-block;
+    text-align: center;
 }
-.button:hover{
+.button-h:hover{
     opacity: 1; 
     cursor: pointer;
 }
 .small{
     font-size: 1em;
     font-weight: 300;
+}
+.mid{
+    font-size: 1.5em;
+    font-weight: 300;
+}
+#description{
+    width: 100%;
+    margin-top: 25px;
+}
+#time {
+    position: absolute;
+    margin: 25px; 
+    width: 20%;
+    padding: 30px;
+    text-align: center;
 }

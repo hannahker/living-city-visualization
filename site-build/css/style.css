@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-scrolling-nav/blob/master/LICENSE)
  */
 header {
-    padding: 50vh 0 100px;
+    padding: 34vh 0 100px;
     height:100vh;
 }
 
@@ -14,8 +14,13 @@ section {
 }
 
 .green{
-    background-color: darkgreen;
+    /*background-color: darkgreen;*/
+    background-color: #004F2d;
 }
+.b1{background-color: #c2a878}
+.b2{background-color: #6e633d}
+.a1{background-color: #FF6F59}
+
 .flex{
     display:flex;
 }
@@ -33,4 +38,18 @@ section {
 }
 .fill{
     height: 300px;
+}
+.icon{
+    margin-top: 10%; 
+    padding: 5%;
+}
+#icons{
+
+    width: 50%;
+    height: auto; 
+    margin: auto;
+}
+.responsive {
+  width: 100%;
+  height: auto;
 }
