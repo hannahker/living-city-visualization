@@ -16,8 +16,8 @@ var map = new mapboxgl.Map({
     container: 'map-container2',
     style: 'mapbox://styles/hannahker/cka393ggw06m71ilam9a36pqn',
     //style: 'mapbox://styles/mapbox/satellite-v9',
-    center: [-97.839425,38.510370],
-    zoom: 3
+    center: [-73.839349,42.695589], 
+    zoom: 10
 });
 
 // ------------------------------------------------ ZOOM TO THE COORDINATES 
@@ -57,21 +57,29 @@ function clearAnimate(){
     path.geometry.coordinates = []
     map.getSource('animated').setData(path);
     point.geometry.coordinates = [];
-    map.getSource('point').setData(point);
-    
+    map.getSource('point').setData(point); 
     // Empty the timer div 
     document.getElementById('time').innerHTML = '';
+    // Clear the popup boxes
+    document.getElementById('animal-info').classList.remove('b1')
+    document.getElementById('animal-info').classList.remove('shadow-box')
+    // Empty the comments div
+    //document.getElementById('comments').innerHTML = '';
 }
 
 // ------------------------------------------------ ANIMATE THE PATH
 function animatePath(){
     var status = document.getElementById('animate').innerHTML;
+    var aInfo = document.getElementById('animal-info') // Div for the timer 
+    
     go = true;  // variable to stop the function - global scope 
     
     // Stop the animation
     if(status=='Stop'){
         document.getElementById('animate').innerHTML= ('Animate'); 
         go = false; // Stop the animation
+        aInfo.classList.remove('b1')
+        aInfo.classList.remove('shadow-box')
     }
     
     // Animate a path 
@@ -80,7 +88,14 @@ function animatePath(){
         var num = Math.floor(Math.random() * Math.floor(allData.features.length));
         document.getElementById('animate').innerHTML= ('Stop'); 
         coordinates = allData.features[num].geometry.coordinates;
-        //zoomTo(coordinates);
+
+        // Add the timer and animal info style
+        aInfo.classList.add('b1')
+        aInfo.classList.add('shadow-box')
+        
+        // Add the animal details to the info box 
+        //document.getElementById('comments').innerHTML = allData.features[num].properties.comments
+        //console.log(allData)
         
         // Start with empty line data
         path = {
@@ -104,6 +119,7 @@ function animatePath(){
         // Set the data source 
         map.getSource('animated').setData(path)
         
+        
         // Add more coordinates to the list and update the map 
         // Help from: https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/ 
         var i = 0; 
@@ -114,8 +130,10 @@ function animatePath(){
                     // Check if the current coordinate is also a true coordinate    
                     for(var j=0; j<trueCoords.length; j++){
                         if(coordinates[i]==trueCoords[j][2]){
+                            // Set the new data source 
                             point.geometry.coordinates = trueCoords[j][2];
                             map.getSource('point').setData(point);
+                            // Update the time 
                             document.getElementById('time').innerHTML = trueCoords[j][1];
                         }
                     }
@@ -125,7 +143,7 @@ function animatePath(){
                     map.getSource('animated').setData(path);
                    
                     // Control the zoom
-                    map.setPitch(60);
+                    //map.setPitch(60);
                     zoomTo(path.geometry.coordinates);
                     i++;
                 } 
@@ -215,7 +233,8 @@ map.on('load', function() {
             },
             'paint': {
                 'line-color': accent,
-                'line-width': width,
+                'line-width': 8,
+                'line-blur': 1,
                 //'line-opacity': 0.3,
                 'line-gradient': [
                 'interpolate',
@@ -261,7 +280,7 @@ map.on('load', function() {
         'source': 'point',
         'paint': {
             'circle-color': accent,
-            'circle-radius': 8,
+            'circle-radius': 10,
             'circle-opacity': 1
            // 'circle-opacity-transition': {duration:20}
         }
@@ -299,7 +318,8 @@ map.on('load', function() {
                 if(data.features[i].properties.TRUE=='TRUE'){
                     triple.push(data.features[i].properties.ID,
                                 data.features[i].properties.time,
-                                data.features[i].geometry.coordinates)
+                                data.features[i].geometry.coordinates,
+                                data.features[i].properties.comments) // **** ONLY WORKS WITH THE FISHER DATA
                     trueCoords.push(triple)
                 }
                 allCoords.push(data.features[i].geometry.coordinates)

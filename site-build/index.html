@@ -68,7 +68,7 @@
     </div>
   </header>
 
-  <section id="about">
+  <div class='textbox' id="about">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mx-auto">
@@ -77,12 +77,14 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
+    
+    <div class='fill green'></div>
 
     <div id="map1" class="bg-light">
         <link rel="stylesheet" href="yufu_map/cw_styles.css">
         <div class=flex style="flex-direction: row-reverse">
-            <div id='map-container1' class='mapbox'>
+            <div id='map-container1' class='mapbox b1 lmap'>
 
                 <!-------------------->
                 <iframe align="center" width="100%" height="100%" src="yufu_map/habitat.html" frameborder="0" id="yufumap"></iframe>
@@ -170,13 +172,16 @@
     </div>
     <div class='fill green'></div>
     
-    <div id="map2" class='bg-light'> 
+    <div id="map2" class='bg-light shadow-box'> 
         <div class=flex>
-            <div id='map-container2' class='mapbox a1'>
+            <div id='map-container2' class='mapbox a1 rmap shadow-box'>
                 <!--------------------> 
                 <!-- PUT A MAP HERE --> 
                 <script src='hannah_map/hannah_map.js'></script>
-                <div id='time' class='mid'></div>
+                <div id='animal-info' class='mid info-overlay'>
+                    <div id='time' class='mid'></div>
+                    <div id='comments'></div>
+                </div>
                                 
                 <!-------------------->
             </div>
@@ -187,13 +192,13 @@
                 <link href="hannah_map/hannah_style.css" rel="stylesheet">
 
                 <div class='toggle'>
-                    <select id="animals" class="button-h small">  
+                    <select id="animals" class="button-h small shadow-box">  
                         <option class='small'>- Select an animal -</option>
                         <option class='small'>Coyotes in Albany</option>
                         <option class='small'>Snakes in Memphis</option>
                         <option class='small'>Fishers in Albany</option>
                     </select>
-                <div id='animate' class='button-h small' onclick="animatePath()">Animate</div>
+                <div id='animate' class='button-h small shadow-box' onclick="animatePath()">Animate</div>
                 </div>
                    
  
@@ -248,7 +253,7 @@
     
     <div class='fill green'></div>
 
-    <section id="contact">
+    <div id="contact" class='textbox'>
         <div class="container">
           <div class="row">
             <div class="col-lg-8 mx-auto">
@@ -257,10 +262,10 @@
             </div>
           </div>
     </div>
-    </section>
+    </div>
 
   <!-- Footer -->
-  <footer class="py-5 green">
+  <footer class="py-5 a1">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; CASA Group 1, 2020</p>
     </div>

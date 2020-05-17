@@ -22,6 +22,9 @@
     font-size: 1em;
     font-weight: 300;
 }
+.shadow-box{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .mid{
     font-size: 1.5em;
     font-weight: 300;
@@ -30,10 +33,15 @@
     width: 100%;
     margin-top: 25px;
 }
-#time {
+#aInfo {
+    margin-top: 50px;
+}
+.info-overlay{
     position: absolute;
     margin: 25px; 
     width: 20%;
     padding: 30px;
     text-align: center;
+    opacity: 0.7;
+    display: inline-block;
 }

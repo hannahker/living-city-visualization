@@ -8,6 +8,11 @@ header {
     height:100vh;
 }
 
+.textbox {
+    height: 100vh;
+    padding: 150px 0;
+}
+
 section {
     height: 100vh;
     padding: 150px 0;
@@ -27,8 +32,10 @@ section {
 .mapbox{
     width: 75%;
     min-height:95vh;
-    padding-left: 20px;
 }
+.rmap{padding-left: 20px}
+.lmap{padding-right: 20px}
+
 .infobox{
     /*min-width: 25%;*/
     width: 25%;
@@ -52,4 +59,7 @@ section {
 .responsive {
   width: 100%;
   height: auto;
+}
+.btext{
+    color: black;
 }
