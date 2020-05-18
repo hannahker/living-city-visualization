@@ -1,0 +1,535 @@
+<!DOCTYPE html> <html>
+<head>
+<meta charset='utf-8' />
+<title>observation of Reptile</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css" rel="stylesheet" />
+<style>
+.<style>
+    body { 
+        margin:0; 
+        padding:0;
+        font-family: 'Montserrat', Helvetica, sans-serif;
+        }
+     #map { position:absolute; top:0; bottom:0; width:100%; }
+
+h1 {
+  font-size: 23px;
+  line-height: 30px;
+  font-family: 'Work Sans';	
+}
+
+h2 {
+font-family: 'Work Sans';
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+p{
+	font-family: 'Work Sans';	
+	font-size: 13px;
+}
+h3 {
+  font-size: 10px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+
+#console {
+  position: absolute;
+  width: 200px;
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: white;
+}
+
+.map-overlay {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    position: absolute;
+    width: 200px;
+    min-width: 300px;
+    top: 0;
+    left: 0;
+    padding: 15px;
+}
+
+.map-overlay .map-overlay-inner {
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 50px;
+    width: 300px;
+    height: 665px;
+	
+    
+    
+}
+
+.map-overlay table {
+    border: none;
+    width: 100%;
+}
+
+.map-overlay h2 {
+    line-height: 24px;
+    display: block;
+    margin: 0 0 0px;
+}
+
+.map-overlay label {
+    font: 18px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    display: block;
+    vertical-align:middle;
+    margin: 0 0 0 0px;
+    padding: 0;
+}
+
+.map-overlay input {
+    background-color: transparent;
+    display: inline-block;
+    width: 100%;
+    min-width: 200px;
+    position: relative;
+    margin: 6px 0 0 0;
+    cursor: ew-resize;
+}
+
+.map-overlay p.credit {
+   margin: 0;
+   padding: 0;
+}
+
+
+.map-overlay-inner fieldset {
+border: none;
+padding: 0;
+margin: 0 0 10px;
+}
+ 
+.map-overlay-inner fieldset:last-child {
+margin: 0;
+}
+
+.session{
+        margin-bottom: 50px;
+    
+    }
+
+.label{
+        width: 30%;
+        display: inline-block;
+        text-align: center;
+    }
+
+.year_label{
+    font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.legend{
+     z-index: 10000;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    position: absolute;
+    right: 0;
+    bottom:2px ;
+}
+</style>
+    </head>
+<body>
+<div id='map'></div>
+
+<div class='map-overlay top'>  
+    <div class='map-overlay-inner'>
+        <h1> Reptile 1902 - 2014 </h1>
+        
+        <div class='session' id='sliderbar'>
+            <label><h2>show the Reptile by year: <span id='slider-value'>1902</span></h2></label>
+            <table><tr><td>
+                <input id='slider' type='range' min='1902' max='2014' step='1' value='1875' list='tickmarks'/>
+            </td>     
+            </tr></table>
+       
+        <div class='session'>
+            <div class='row' id='filters'>
+                <fieldset>
+                <label><h2>Display variour type of reptile</h2></label>
+                <select id='layer' name='layer'>
+                    <option value='ALL' selected>ALL</option>
+                    <option value='Amphibia'>Amphibia</option>
+                    <option value='Anguis fragilis'>Anguis fragilis</option>
+                    <option value='Bofu bufo'>Bofu bufo</option>
+                    <option value='Coronella austriaca'>Coronella austriaca</option>
+                    <option value='Epidalea calamita'>Epidalea calamita</option>
+                    <option value='Ichthyosaura alpestris'>Ichthyosaura alpestris</option>
+                    <option value='Lacerta agilis'>Lacerta agilis</option>
+                    <option value='Lissotriton'>Lissotriton</option>
+                    <option value='Lissotriton vulgaris'>Lissotriton vulgaris</option>
+                    <option value='Natrix helvetica'>Natrix helvetica</option>
+                    <option value='Ophidia'>Ophidia</option>
+                    <option value='Pelophylax'>Pelophylax</option>
+                    <option value='Pelophylax esculentus'>Pelophylax esculentus</option>
+                    <option value='Pelophylax ridibundus'>Pelophylax ridibundus</option>
+                    <option value='Rana temporaria'>Rana temporaria</option>
+                    <option value='Reptilia'>Reptilia</option>
+                    <option value='Salamandridae'>Salamandridae</option>
+                    <option value='Trachemys scripta'>Trachemys scripta</option>
+                    <option value='Triturus cristatus'>Triturus cristatus</option>
+                    <option value='Vipera berus'>Vipera berus</option>
+                    <option value='Zootoca vivipara'>Zootoca vivipara</option>
+                </select>
+                <button id="showLegend">Show Legend</button>
+                </fieldset>
+                <div class='showInfo' id="ALL" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>ALL</h2>  
+                        <p>Reptiles are tetrapod animals in the class Reptilia, comprising today's turtles, crocodilians, snakes, amphisbaenians, lizards, tuatara, and their extinct relatives including non-avian dinosaurs. The study of these traditional reptile orders, historically combined with that of modern amphibians, is called herpetology.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/all.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Amphibia" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Amphibia</h2>  
+                        <p>Amphibians are ectothermic, tetrapod vertebrates of the class Amphibia. Modern amphibians are all Lissamphibia. They inhabit a wide variety of habitats, with most species living within terrestrial, fossorial, arboreal or freshwater aquatic ecosystems.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Amphibia.png'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Anguis fragilis" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Anguis fragilis</h2>  
+                        <p>Anguis fragilis is a reptile native to Eurasia. It is also called a deaf adder, a slowworm,[2] a blindworm, or regionally, a long-cripple, to distinguish it from the Peloponnese slowworm. These legless lizards are also sometimes called common slowworms. The "blind" in blindworm refers to the lizard's small eyes, similar to a blindsnake (although the slowworm's eyes are functional </p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/fragilis.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Bofu bufo" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Bofu bufo</h2>  
+                        <p>The common toad, European toad, or in Anglophone parts of Europe, simply the toad (Bufo bufo, from Latinbufo "toad"), is an amphibian found throughout most of Europe (with the exception of Ireland, Iceland, and some Mediterranean islands), in the western part of North Asia, and in a small portion of Northwest Africa. It is one of a group of closely related animals that are descended from a common ancestral line of toads and which form a species complex.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/bufo.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Coronella austriaca" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Coronella austriaca</h2>  
+                        <p>The smooth snake (Coronella austriaca)[3] is a species of non-venomous snake in the family Colubridae. The species is found in northern and central Europe, but also as far east as northern Iran. The Reptile Databaserecognizes two subspecies as being valid, including the nominotypical subspecies described here</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/austriaca.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Epidalea calamita" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Epidalea calamita</h2>  
+                        <p>The natterjack toad (Epidalea calamita) is a toad native to sandy and heathland areas of Europe. Adults are 60–70 mm in length and are distinguished from common toads by a yellow line down the middle of the back, and parallel paratoid glands. They have relatively short legs, and this gives them a distinctive gait, contrasting with the hopping movement of many other toad species.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/calamita.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Ichthyosaura alpestris" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Ichthyosaura alpestris</h2>  
+                        <p>The alpine newt (Ichthyosaura alpestris) is a species of newt native to continental Europe and introduced to Great Britain and New Zealand. Adults measure 7–12 cm (2.8–4.7 in) in total and are usually dark grey to blue on the back and sides, with an orange belly and throat. Males are more conspicuously coloured than the drab females, especially during breeding season.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/alpestris.jpg'></img>    
+                    </div>
+                </div>
+                 <div class='showInfo' id="Lacerta agilis" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Lacerta agilis</h2>  
+                        <p>The sand lizard is a sexually dimorphic legged lizard. In northwest Europe, both sexes are characterised by lateral and dorsal strips of ocellated (eye-shaped) markings, dark patches with pale centres. Colouration varies across their European and Russian range.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/agilis.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Lissotriton" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Lissotriton</h2>  
+                        <p>Lissotriton is a genus of newts native to Europe and parts of Asia Minor. As most other newts, they are aquatic as larvae and during breeding time but live in terrestrial, humid habitats over the rest of the season</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Lissotriton.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Lissotriton vulgaris" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Lissotriton vulgaris</h2>  
+                        <p>The smooth newt, northern smooth newt or common newt (Lissotriton vulgaris) is a species of newt commonly found throughout Europe, except the far north, areas of Southern France and the Iberian Peninsula.[4] It is closely related with several similar species that were previously classified as subspecies</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Lissotriton.jpg'></img>    
+                    </div>
+                </div>
+                 <div class='showInfo' id="Natrix helvetica" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Natrix helvetica</h2>  
+                        <p>The barred grass snake (Natrix helvetica) is a non-venomous colubrid snake from Western Europe, living in and close to water. It was included within the grass snake species, Natrix natrix, until August 2017, when genetic analysis suggested that it was better treated as a separate species</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/helvetica.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Ophidia" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Ophidia</h2>  
+                        <p>Ophidia (also known as Pan-Serpentes[2]) is a group of squamate reptiles including modern snakes and all reptiles more closely related to snakes than to other living groups of lizards.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Ophidia.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Pelophylax" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Pelophylax</h2>  
+                        <p>Pelophylax is a genus of true frogs widespread in Eurasia, with a few species ranging into northern Africa. This genus was erected by Leopold Fitzinger in 1843 to accommodate the green frogs of the Old World, which he considered distinct from the brown pond frogs of Carl Linnaeus' genus Rana</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Pelophylax.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Pelophylax esculentus" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>esculentus</h2>  
+                        <p>The edible frog (Pelophylax kl. esculentus) [1][2] is a name for a common European frog, also known as the common water frog or green frog</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/esculentus.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Pelophylax ridibundus" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Pelophylax ridibundus</h2>  
+                        <p>The marsh frog (Pelophylax ridibundus) is the largest frog native to Europe and belongs to the family of true frogs. It is very similar in appearance to the closely related edible frog and pool frog.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/pelophylaxridibundus.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Rana temporaria" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Rana temporaria</h2>  
+                        <p>The common frog (Rana temporaria), also known as the European common frog, European common brown frog, or European grass frog, is a semi-aquatic amphibian of the family Ranidae.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/temporaria.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Reptilia" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Reptilia</h2>  
+                        <p>Reptiles are tetrapod animals in the class Reptilia, comprising today's turtles, crocodilians, snakes, amphisbaenians, lizards, tuatara, and their extinct relatives including non-avian dinosaurs.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Reptilia.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Salamandridae" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Salamandridae</h2>  
+                        <p> Salamandridae is a family of salamanders consisting of true salamanders and newts. Currently, 74 species (with more expected) have been identified in the Northern Hemisphere - Europe, Asia, the northern tip of Africa, and North America. Salamandrids are distinguished from other salamanders by the lack of rib or costal grooves along the sides of their bodies and by their rough skin. Their skin is very granular because of the number of poison glands.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Salamandridae.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Trachemys scripta" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Trachemys scripta</h2>  
+                        <p>The pond slider (Trachemys scripta) is a species of common, medium-sized, semiaquatic turtle. There are three subspecies,[2] the most recognizable of which is the red-eared slider (T. s. elegans), which is popular in the pet trade and has been introduced to other parts of the world by people releasing it to the wild.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/scripta.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Triturus cristatus" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Triturus cristatus</h2>  
+                        <p> The northern crested newt, great crested newt or warty newt (Triturus cristatus) is a newt species native to Great Britain, northern and central continental Europe and parts of Western Siberia. It is a large newt, with females growing up to 16 cm (6.3 in) long.</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Triturus.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Vipera berus" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Vipera berus</h2>  
+                        <p>Vipera berus, also known as Marlies, Prags, Bardas or the common European adder[3] or common European viper,[4] is a venomous snake that is extremely widespread and can be found throughout most of Western Europeand as far as East Asia</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/berus.jpg'></img>    
+                    </div>
+                </div>
+                <div class='showInfo' id="Zootoca vivipara" style="height: 500px;overflow-y: scroll;">
+                    <div>
+                        <h2>Zootoca vivipara</h2>  
+                        <p> The viviparous lizard, Zootoca vivipara (formerly Lacerta vivipara), is a Eurasian lizard. It lives farther north than any other species of non-marine reptile, and most populations are viviparous (giving birth to live young), rather than laying eggs as most other lizards do. It is the only species in the monotypic genus Zootoca</p>
+                        <h2>IMAGES</h2>
+                        <img src='./img/Zootoca.jpg'></img>    
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='legend' style='display:none'>
+    <div class='map-overlay-inner'>
+    <h1> legend </h1>
+    <div class='session'>
+            <div class='row' id='filters'>
+                <fieldset>
+                <table bordercolor="#cccccc" cellspacing="0" cellpadding="0" width="100%" border="1" style="font-size:12px;border-collapse:collapse">
+                    <tbody id="color">
+                        <tr align="center">
+                            <td><strong>color</strong></td>
+                            <td><strong>Scientific name</strong></td>
+                        </tr>
+                         <tr>
+                            <td bgcolor="#fbb03b">　</td>
+                            <td>Anguis fragilis</td>
+                            
+                        </tr>
+                        <tr><td bgcolor="#223b53"></td><td>Bofu bufo</td></tr>
+                        <tr><td bgcolor="#FF1493"></td><td>Coronella austriaca</td></tr>
+                        <tr><td bgcolor="#FF00FF"></td><td>Epidalea calamita</td></tr>
+                        <tr><td bgcolor="#9932CC"></td><td>Ichthyosaura alpestris</td></tr>
+                        <tr><td bgcolor="#0000CD"></td><td>Lacerta agilis</td></tr>
+                        <tr><td bgcolor="#B0C4DE"></td><td>Lissotriton</td></tr>
+                        <tr><td bgcolor="#1E90FF"></td><td>Lissotriton vulgaris</td></tr>
+                        <tr><td bgcolor="#87CEEB"></td><td>Natrix helvetica</td></tr>
+                        <tr><td bgcolor="#5F9EA0"></td><td>Ophidia</td></tr>
+                        <tr><td bgcolor="#00CED1"></td><td>Pelophylax</td></tr>
+                        <tr><td bgcolor="#008080"></td><td>Pelophylax esculentus</td></tr>
+                        <tr><td bgcolor="#40E0D0"></td><td>Pelophylax ridibundus</td></tr>
+                        <tr><td bgcolor="#90EE90"></td><td>Rana temporaria</td></tr>
+                        <tr><td bgcolor="#32CD32"></td><td>Reptilia</td></tr>
+                        <tr><td bgcolor="#228B22"></td><td>Salamandridae</td></tr>
+                        <tr><td bgcolor="#ADFF2F"></td><td>Trachemys scripta</td></tr>
+                        <tr><td bgcolor="#FFDEAD"></td><td>Triturus cristatus</td></tr>
+                        <tr><td bgcolor="#CD853F"></td><td>Vipera berus</td></tr>
+                        <tr><td bgcolor="#8B4513"></td><td>Zootoca vivipara</td></tr>
+                        <tr><td bgcolor="red"></td><td>other</td></tr>
+                        
+                        
+                    </tbody>
+                </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+ 
+  mapboxgl.accessToken = 'pk.eyJ1Ijoid2FuemhpeGllIiwiYSI6ImNrN2t3N3kyNzAxaXQzZXBlZjN5OTluNHUifQ.0f_3Pqf2tFudneiUhx4-6Q';
+    
+ 
+  var map = new mapboxgl.Map({
+    'container': 'map',
+    'style': 'mapbox://styles/wanzhixie/cka6rm2h30j4f1ip8lzeqhe1b',
+    'center': [-0.3, 51.5],
+    'zoom': 9
+  });
+
+
+map.on('load', function () {
+
+  var filterYear = ['==', ['number', ['get', 'End date year']], 1902];
+
+  map.addLayer({
+    id: 'reptile',
+    type: 'circle',
+    source: {
+      type: 'vector',
+      url: 'mapbox://wanzhixie.3zfc6ahk'
+    },
+    'source-layer': 'records-2020-05-12-djg4on',
+    paint: {
+            'circle-radius': 6,
+            'circle-opacity': 1,
+            'circle-color': [
+              'match',
+              ['get', 'Scientific name'],
+              'Anguis fragilis', '#fbb03b',
+              'Bofu bufo', '#223b53',
+              'Coronella austriaca', '#FF1493',
+              'Epidalea calamita', '#FF00FF',
+              'Ichthyosaura alpestris', '#9932CC',
+              'Lacerta agilis', '#0000CD',
+              'Lissotriton', '#B0C4DE',
+              'Lissotriton vulgaris', '#1E90FF',
+              'Natrix helvetica', '#87CEEB',
+              'Ophidia', '#5F9EA0',
+              'Pelophylax','#00CED1',
+              'Pelophylax esculentus','#008080',
+              'Pelophylax ridibundus','#40E0D0',
+              'Rana temporaria','#90EE90',
+              'Reptilia','#32CD32',
+              'Salamandridae','#228B22',
+              'Trachemys scripta','#ADFF2F',
+              'Triturus cristatus','#FFDEAD',
+              'Vipera berus','#CD853F',
+              'Zootoca vivipara','#8B4513',
+              /* other */ 'red'
+            ]
+        },
+    'filter': filterYear
+  });
+
+  var sliderValue = document.getElementById('slider-value');
+  document.getElementById('slider').addEventListener('input', function (e) {
+    var year = parseInt(e.target.value, 10);
+    document.getElementById('layer').options[0].selected = true;
+    filterYear = ['==', ['number', ['get', 'End date year']], year];
+    map.setFilter('reptile', filterYear);
+    document.getElementById('slider-value').innerText = year;
+  });
+
+  document.getElementById('layer').addEventListener('change', e => {
+    var sname = e.target.value;
+    console.log(sname)
+    if (sname.trim() === "ALL") {
+      map.setFilter('reptile', filterYear);
+        var infos = document.getElementsByClassName('showInfo');
+        for (let index = 0; index < infos.length; index++) {
+            const element = infos[index];
+            element.style.display='none';
+        }
+      document.getElementById(sname).style.display='block'
+
+    } else {
+        var infos = document.getElementsByClassName('showInfo');
+        for (let index = 0; index < infos.length; index++) {
+            const element = infos[index];
+            element.style.display='none';
+        }
+        document.getElementById(sname).style.display='block'
+        var year = document.getElementById('slider').value
+        var filter = ['==', 'Scientific name', sname];
+        var combinedFilter = ["any",['==','End date year',year],['==', 'Scientific name', sname]];
+        map.setFilter('reptile', combinedFilter);
+    }
+  });
+
+})
+
+var flag = false;
+document.getElementById('showLegend').addEventListener('click', e => {
+    if(!flag){
+        document.getElementsByClassName("legend")[0].style.display='block'
+        document.getElementById('showLegend').innerText = 'Hide Legend'
+        flag=true;
+    }else{
+        document.getElementsByClassName("legend")[0].style.display='none'
+        document.getElementById('showLegend').innerText = 'Show Legend'
+        flag=false;
+    }
+});
+
+  hideid=['Amphibia','Anguis fragilis','Bofu bufo',"Coronella austriaca","Epidalea calamita","Ichthyosaura alpestris","Lacerta agilis",'Lissotriton',
+      "Lissotriton vulgaris","Natrix helvetica","Ophidia","Pelophylax","Pelophylax esculentus","Pelophylax ridibundus","Rana temporaria",
+      "Reptilia","Salamandridae","Trachemys scripta","Triturus cristatus","Vipera berus","Zootoca vivipara"]
+  hide(hideid)
+function hide(hideid) {
+    for (var i=0;i<hideid.length;i++){
+        document.getElementById(hideid[i]).style.display='none'
+    }
+
+
+}
+
+</script>
+</body>
+</html>
+    
