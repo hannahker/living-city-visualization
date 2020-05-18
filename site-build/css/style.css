@@ -22,7 +22,7 @@ section {
     /*background-color: darkgreen;*/
     background-color: #004F2d;
 }
-.b1{background-color: #c2a878}
+.b1{background-color: rgba(194, 168, 120, 0.6)}
 .b2{background-color: #6e633d}
 .a1{background-color: #FF6F59}
 
@@ -35,6 +35,11 @@ section {
 }
 .rmap{padding-left: 20px}
 .lmap{padding-right: 20px}
+
+.borders{
+    margin-left: 25px;
+    margin-right: 25px;
+}
 
 .infobox{
     /*min-width: 25%;*/

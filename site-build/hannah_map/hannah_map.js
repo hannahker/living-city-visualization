@@ -7,11 +7,6 @@ var accent = '#FF6F59' // Pink
 var opacity = 0.35; 
 var width = 8; 
 
-// ------------------------------------------------ TEXT TO POPULATE THE SITE
-var coyoteInfo = 'Put some info about urban coyotes here. General notes: <p> Not much crossing the highway, largely moving in green spaces, but see that one that is in a fully urban area. </p>'
-
-var fisherInfo = 
-
 // ------------------------------------------------ SET UP THE MAP   
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFoa2VyIiwiYSI6ImNpdHEzcndkajAwYmwyeW1zd2UxdTAwMnMifQ.hYglJOOC0Mhq7xNYOxc6qg'; 
 var map = new mapboxgl.Map({
@@ -21,6 +16,7 @@ var map = new mapboxgl.Map({
     center: [-73.839349,42.695589], 
     zoom: 10
 });
+
 
 // ------------------------------------------------ ZOOM TO THE COORDINATES 
 function zoomTo(coords){
@@ -263,6 +259,7 @@ map.on('load', function() {
     
     // Add scale bar to the map
     map.addControl(new mapboxgl.ScaleControl());
+    // Add the zoom controls
     
 // ------------------------------------------------ ADD THE BASE DATA EMPTY LAYER/SOURCE  
     map.addSource('all', {

@@ -56,7 +56,7 @@
     </div>
   </nav>
 
-  <header class="green text-white">
+  <header class="green text-white shadow-box">
     <div class=" container text-center">
       <h1>Wildlife in the City</h1>
       <p class="lead">A digital visualization group project</p>
@@ -73,7 +73,11 @@
       <div class="row">
         <div class="col-lg-8 mx-auto">
           <h2>Introduction</h2>
-          <p class="lead">Why do we care about this project and why does it matter? Give some key background facts with non-cartographic visualizations.</p>
+            <hr>
+            <p class="small">Humans aren’t the only beings that inhabit cities. From <a href='https://www.nydailynews.com/new-york/brooklyn/coyote-spotted-roof-long-island-city-bar-article-1.2167643'>coyotes</a> on rooftops in New York City to <a href='https://www.nhm.ac.uk/discover/mumbais-leopards-caught-on-camera.html'>leopards</a> in the alleys of Mumbai, we share our urban environments with a diverse range of animals. While it may be a nuisance to have racoons knock over your garbage or squirrels steal your lunch, many animals are of <a href='https://content.yardmap.org/learn/the-value-of-wildlife-to-cities/'>great value to cities</a>.</p>
+            <p class="small">We must also acknowledge the <a href='https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0154613'>impacts</a> of rapid urbanization on animal habitat loss and fragmentation. We have a responsibility to welcome animals into our urban spaces and design cities that are in harmony with nature. Such efforts are mutually beneficial, as the presence of green space and its accompanying wildlife <a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6277587/'>has been found</a> to enhance our psychological wellbeing.</p>
+            <p class="small">This work aims to reminds its viewers of our wild urban neighbours. Being reminded of the presence of wildlife in urban spaces can encourage us to better integrate the natural and built environments, and preserve biodiversity. This work includes stories from a variety of scales, locations, and time periods, showing how different animals inhabit urban environments all over the world.</p>
+            <hr>
         </div>
       </div>
     </div>
@@ -81,10 +85,11 @@
     
     <div class='fill green'></div>
 
-    <div id="map1" class="bg-light">
+    <div class='green'>
+    <div id="map1" class="bg-light borders">
         <link rel="stylesheet" href="yufu_map/cw_styles.css">
         <div class=flex style="flex-direction: row-reverse">
-            <div id='map-container1' class='mapbox b1 lmap'>
+            <div id='map-container1' class='mapbox green shadow-box'>
 
                 <!-------------------->
                 <iframe align="center" width="100%" height="100%" src="yufu_map/habitat.html" frameborder="0" id="yufumap"></iframe>
@@ -95,35 +100,26 @@
                 <!-------------------->
             </div>
 
-            <div id="features" class='infobox'><h3>Biodiversity and urbanization</h3>
-
+            <div id="features" class='infobox lead bg-light'><h3>Global urbanization and critical habitats</h3>
+                <br>
+                <p class=v-small> <a href='https://biodiversitya-z.org/content/critical-habitat'>Critical habitats</a> (CH) can broadly be understood as areas with high biodiversity value that are relied upon by critically endangered or endangered species. Urbanization in the map is defined as the percentage of built up area in that cell. Overlaying these layers allows us to globally compare how processes of urbanization are in tension or in harmony with the preservation of the natural world. Below, we briefly compare the trends in three countries.</p><br>
+                <hr>
+                
                 <section id="China" style="position: relative; top: -5%; height: 600px" class="active">
-                <h5>China</h5><br>
-                <p>Most habitats including likely crucial habitat (CH) and potential CH are distributed at west and north west of China. Urbanization in the map
-                    is the percentage of built up area in that cell. It can be seen that high urbanization cities are located at middle and east of China,
-                    and these areas are far away or surrounding by habitat. <br><br>
-                    <a href="https://chiculture.org.hk/en/china-today/1345">'Clear waters and green mountains are as good as mountains of gold and silver'</a>
-                said by president Xi. Government restrict the land development in habitats, and many industry has to be moved to other areas<br><br>
-                Therefore, urbanization is far way from habitats or surrounding them.</p>
+                <h5>China</h5>
+                <p>Most habitats including likely CH and potential CH are distributed at west and north west of China.  It can be seen that high urbanization cities are located at middle and east of China, and these areas are far away or surrounding by habitat. </p><p><a href="https://chiculture.org.hk/en/china-today/1345">'Clear waters and green mountains are as good as mountains of gold and silver'</a>
+                said by president Xi. Government restrict the land development in habitats, and many industry has to be moved to other areas.</p><p>Therefore, urbanization is far way from habitats or surrounding them.</p>
                 </section>
 
-                <section id="UK" style="position: relative; top: -5%;height: 500px">
+                <section id="UK" class='lead' style="position: relative; top: -5%;height: 500px">
                     <h5>UK</h5>
-                    <p>The habitats in UK are located at north of England and Scotland. Different from China, cities with low and middle urbanization
-                    are inside of habitats.<br><br> For instance, in southampton and bristol, there are some area with 5%-20% urbanization index inside of
-                    habitats. By contrast, some big cities like London, birmingham are still far aways from habits, which is similar to China.</p>
+                    <p>The habitats in UK are located at north of England and Scotland. Different from China, cities with low and middle urbanization are inside of habitats.</p><p>For instance, in Southampton and Bristol, there are some area with 5%-20% urbanization index inside of habitats. By contrast, some big cities like London and Birmingham are still far aways from habits, which is similar to China.</p>
                 </section>
 
                 <section id="USA" style="position: relative; top: 0%">
                     <h5>USA</h5>
-                    <p>Likely CH is widely distributed at west part of the USA, while potential CH is at East of the USA. Compared with China and UK,
-                    some cities with high urbanization are inside of habitat.<br><br>
-                    In the west part of the USA, some big cities San Francisco and Los Angeles are surrounding by likely CH. In the south part, New orleans
-                    and Nashville are inside of likely and potential CH.<br><br>
-                    The possible reason leading to the difference among these tree counties is urbanization time. The urbanization of China begin from reform and opening
-                    in the 1980s which is much later than UK and the USA. In this case, China can choose cities area far away from habitats. However, UK and the USA urbanization
-                    is earlier than China, and government in that time may not realise that. Meanwhile, these cities in the west of the USA are developed during
-                        <a href="https://www.history.com/topics/westward-expansion">Westward Movement</a> (1800s-1900s), the cities were built sense easy to develop some industries in the habitat in that time.</p>
+                    <p>Likely CH is widely distributed at west part of the USA, while potential CH is at East of the USA. Compared with China and UK, some cities with high urbanization are inside of habitat.</p><p>
+                    In the west part of the USA, some big cities San Francisco and Los Angeles are surrounding by likely CH. In the south part, New orleans and Nashville are inside of likely and potential CH.</p><p>The possible reason leading to the difference among these three counties is urbanization time. The urbanization of China begin from reform and opening in the 1980s which is much later than UK and the USA. In this case, China can choose cities area far away from habitats. However, UK and the USA urbanization is earlier than China, and government in that time may not realise that. Meanwhile, these cities in the west of the USA are developed during <a href="https://www.history.com/topics/westward-expansion">Westward Movement</a> (1800s-1900s), the cities were built sense easy to develop some industries in the habitat in that time.</p>
                 </section>
 
                 <!-------------------->
@@ -181,64 +177,67 @@
 
 
             </div>
-
         </div>      
+    </div>
     </div>
     <div class='fill green'></div>
     
-    <div id="map2" class='bg-light shadow-box'> 
-        <div class=flex>
-            <div id='map-container2' class='mapbox a1 rmap shadow-box'>
-                <!--------------------> 
-                <!-- PUT A MAP HERE --> 
-                <script src='hannah_map/hannah_map.js'></script>
-                <div id='animal-info' class='info-overlay'>
-                    <div id='time' class='mid padded'></div>
-                    <div id='comments' class='small padded '></div>
-                    <div id='stats' class='small padded'></div>
-                </div>
-                                
-                <!-------------------->
-            </div>
-            <div class='infobox-h'><h3>Tracking the movement of fishers in Albany</h3>
-                <!-------------------->                 
-                <!-- PUT SIDEBAR HERE --> 
-                
-                <link href="hannah_map/hannah_style.css" rel="stylesheet">
+    <div class='green'>
+        <div id="map2" class='bg-light shadow-box borders'> 
+            <div class=flex>
+                <div id='map-container2' class='mapbox green shadow-box'>
+                    <!--------------------> 
+                    <!-- PUT A MAP HERE --> 
+                    <script src='hannah_map/hannah_map.js'></script>
+                    <div id='animal-info' class='info-overlay'>
+                        <div id='time' class='mid padded'></div>
+                        <div id='comments' class='small padded '></div>
+                        <div id='stats' class='small padded'></div>
+                    </div>
 
-                <div class='toggle'>
-                    <select id="animals" class="button-h small shadow-box">  
-                        <option class='small'>- Select an animal -</option>
-                        <option class='small'>Coyotes in Albany</option>
-                        <option class='small'>Snakes in Memphis</option>
-                        <option class='small'>Fishers in Albany</option>
-                    </select>
-                <div id='animate' class='button-h small shadow-box' onclick="animatePath()">Animate</div>
+                    <!-------------------->
                 </div>
-                
-                <div class='f-image'><img src="media/fisher_img.png" alt="Nature" class="responsive"></div>
-                   
-                
-                <div id='description' class='small'>
-                    <h5>What are fishers?</h5><p>A weasel-like mammal, fishers commonly live in coniferous habitats throughout Canada and the northern United States. As described by <a href=https://www.natureconservancy.ca/en/what-we-do/resource-centre/featured-species/mammals/fisher.html>Nature Conservancy Canada</a>, habitat loss and fur trapping in the 19th and 20th centuries significantly reduced their range. Today, in the northeast US, fishers are experiencing a resurgence and are <a href='https://scientistatwork.blogs.nytimes.com/2011/01/25/albanys-urban-weasels/'>adapting to life in urban environments</a>. This data, collected as part of <a href='https://link.springer.com/article/10.1007/s10980-013-9910-0'>a study</a> on corridor-based movement models, provides insight into the daily behaviours of fishers and how they interact with the built environment.</p>
-                    <h5>What does this map tell us?</h5><p>We see the movement patterns from three fishers in the winter of 2011. Each fisher has its own habitat range, each of which cover a patchwork of urban green space. Movement is significantly bounded by major roadways, such as the New York State Thruway and the Adirondack Northway. We also see that the fishers are primarily mobile at night. Their movement patterns can largely be characterized by short clusters of localized movement and long-range movement across their habitat range. This insight can be useful in ensuring that new developments in Albany do not encroach on the habitats of these fishers, and can help researchers better understand how the fishers are adapting to life alongside humans.</p>
-                
-                </div>
-                <div id='details' class='small'></div>
-                
-                <!-------------------->
-            </div>        
-        </div>      
+                <div class='infobox-h'><h3>Tracking the movement of fishers in Albany</h3>
+                    <!-------------------->                 
+                    <!-- PUT SIDEBAR HERE --> 
+
+                    <link href="hannah_map/hannah_style.css" rel="stylesheet">
+
+                    <div class='toggle'>
+                        <select id="animals" class="button-h small shadow-box">  
+                            <option class='small'>- Select an animal -</option>
+                            <option class='small'>Coyotes in Albany</option>
+                            <option class='small'>Snakes in Memphis</option>
+                            <option class='small'>Fishers in Albany</option>
+                        </select>
+                    <div id='animate' class='button-h small shadow-box' onclick="animatePath()">Animate</div>
+                    </div>
+
+                    <div class='f-image'><img src="media/fisher_img.png" alt="Nature" class="responsive"></div>
+
+
+                    <div id='description' class='small'>
+                        <h5>What are fishers?</h5><p>A weasel-like mammal, fishers commonly live in coniferous habitats throughout Canada and the northern United States. As described by <a href=https://www.natureconservancy.ca/en/what-we-do/resource-centre/featured-species/mammals/fisher.html>Nature Conservancy Canada</a>, habitat loss and fur trapping in the 19th and 20th centuries significantly reduced their range. Today, in the northeast US, fishers are experiencing a resurgence and are <a href='https://scientistatwork.blogs.nytimes.com/2011/01/25/albanys-urban-weasels/'>adapting to life in urban environments</a>. This data, collected as part of <a href='https://link.springer.com/article/10.1007/s10980-013-9910-0'>a study</a> on corridor-based movement models, provides insight into the daily behaviours of fishers and how they interact with the built environment.</p>
+                        <h5>What does this map tell us?</h5><p>We see the movement patterns from three fishers in the winter of 2011. Each fisher has its own habitat range, each of which cover a patchwork of urban green space. Movement is significantly bounded by major roadways, such as the New York State Thruway and the Adirondack Northway. We also see that the fishers are primarily mobile at night. Their movement patterns can largely be characterized by short clusters of localized movement and long-range movement across their habitat range. This insight can be useful in ensuring that new developments in Albany do not encroach on the habitats of these fishers, and can help researchers better understand how the fishers are adapting to life alongside humans.</p>
+
+                    </div>
+                    <div id='details' class='small'></div>
+
+                    <!-------------------->
+                </div>        
+            </div>      
+        </div>
     </div>
     
     <div class='fill green'></div>
-    
-    <div id="map3" class="bg-light"> 
+    <div class='green'>
+        <div id="map3" class="bg-light shadow-box borders"> 
         <div class=flex>
-            <div class='infobox'><h3>Mammal observations in London</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
+            <div class='infobox'><h3>Reptile observations in London</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p>
                 <!--------------------> 
                 
-                <!-- PUT SIDEBAR HERE --> 
+                <!-- PUT SIDEBAR HERE -->
+                
                 
                 <!-------------------->
             </div>
@@ -251,9 +250,11 @@
             </div>
         </div>      
     </div>
+    </div>
     <div class='fill green'></div>
     
-    <div id="map4" class='bg-light'> 
+    <div class='green'>
+        <div id="map4" class='bg-light shadow-box borders'> 
         <div class=flex>
             <div id='map-container2' class='mapbox'>
                 <!--------------------> 
@@ -271,8 +272,9 @@
             </div>        
         </div>      
     </div>
+    </div>
     
-    <div class='fill green'></div>
+    <div class='fill green shadow-box'></div>
 
     <div id="contact" class='textbox'>
         <div class="container">
@@ -286,7 +288,7 @@
     </div>
 
   <!-- Footer -->
-  <footer class="py-5 a1">
+  <footer class="py-5 a1 shadow-box">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; CASA Group 1, 2020</p>
     </div>
