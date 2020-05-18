@@ -178,14 +178,15 @@
                 <!--------------------> 
                 <!-- PUT A MAP HERE --> 
                 <script src='hannah_map/hannah_map.js'></script>
-                <div id='animal-info' class='mid info-overlay'>
-                    <div id='time' class='mid'></div>
-                    <div id='comments'></div>
+                <div id='animal-info' class='info-overlay'>
+                    <div id='time' class='mid padded'></div>
+                    <div id='comments' class='small padded '></div>
+                    <div id='stats' class='small padded'></div>
                 </div>
                                 
                 <!-------------------->
             </div>
-            <div class='infobox'><h3>Animal movement in urban environments</h3><p class="small">Here we can put a description of this map and why we are including it in this work.</p>
+            <div class='infobox-h'><h3>Tracking the movement of fishers in Albany</h3>
                 <!-------------------->                 
                 <!-- PUT SIDEBAR HERE --> 
                 
@@ -200,9 +201,15 @@
                     </select>
                 <div id='animate' class='button-h small shadow-box' onclick="animatePath()">Animate</div>
                 </div>
+                
+                <div class='f-image'><img src="media/fisher_img.png" alt="Nature" class="responsive"></div>
                    
- 
-                <div id='description' class='small'></div>
+                
+                <div id='description' class='small'>
+                    <h5>What are fishers?</h5><p>A weasel-like mammal, fishers commonly live in coniferous habitats throughout Canada and the northern United States. As described by <a href=https://www.natureconservancy.ca/en/what-we-do/resource-centre/featured-species/mammals/fisher.html>Nature Conservancy Canada</a>, habitat loss and fur trapping in the 19th and 20th centuries significantly reduced their range. Today, in the northeast US, fishers are experiencing a resurgence and are <a href='https://scientistatwork.blogs.nytimes.com/2011/01/25/albanys-urban-weasels/'>adapting to life in urban environments</a>. This data, collected as part of <a href='https://link.springer.com/article/10.1007/s10980-013-9910-0'>a study</a> on corridor-based movement models, provides insight into the daily behaviours of fishers and how they interact with the built environment.</p>
+                    <h5>What does this map tell us?</h5><p>We see the movement patterns from three fishers in the winter of 2011. Each fisher has its own habitat range, each of which cover a patchwork of urban green space. Movement is significantly bounded by major roadways, such as the New York State Thruway and the Adirondack Northway. We also see that the fishers are primarily mobile at night. Their movement patterns can largely be characterized by short clusters of localized movement and long-range movement across their habitat range. This insight can be useful in ensuring that new developments in Albany do not encroach on the habitats of these fishers, and can help researchers better understand how the fishers are adapting to life alongside humans.</p>
+                
+                </div>
                 <div id='details' class='small'></div>
                 
                 <!-------------------->
