@@ -2,20 +2,22 @@
 
 
 // ------------------------------------------------ BASIC STYLE ITEMS 
-var accent = '#1b4a1d'; // Dark green
-//var accent = '#F45B69' // Pink
-var opacity = 0.03; 
-var width = 5; 
+//var accent = '#004F2d'; // Dark green
+var accent = '#FF6F59' // Pink
+var opacity = 0.35; 
+var width = 8; 
 
 // ------------------------------------------------ TEXT TO POPULATE THE SITE
 var coyoteInfo = 'Put some info about urban coyotes here. General notes: <p> Not much crossing the highway, largely moving in green spaces, but see that one that is in a fully urban area. </p>'
+
+var fisherInfo = 
 
 // ------------------------------------------------ SET UP THE MAP   
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFoa2VyIiwiYSI6ImNpdHEzcndkajAwYmwyeW1zd2UxdTAwMnMifQ.hYglJOOC0Mhq7xNYOxc6qg'; 
 var map = new mapboxgl.Map({
     container: 'map-container2',
-    style: 'mapbox://styles/hannahker/cka393ggw06m71ilam9a36pqn',
-    //style: 'mapbox://styles/mapbox/satellite-v9',
+    //style: 'mapbox://styles/hannahker/cka393ggw06m71ilam9a36pqn',
+    style: 'mapbox://styles/mapbox/satellite-v9',
     center: [-73.839349,42.695589], 
     zoom: 10
 });
@@ -28,7 +30,7 @@ function zoomTo(coords){
         return bounds.extend(coord);
         }, new mapboxgl.LngLatBounds(coords[0], coords[0]));
     map.fitBounds(bounds, {
-        padding: 20
+        padding: 100
     }); 
 }
 
@@ -64,7 +66,52 @@ function clearAnimate(){
     document.getElementById('animal-info').classList.remove('b1')
     document.getElementById('animal-info').classList.remove('shadow-box')
     // Empty the comments div
-    //document.getElementById('comments').innerHTML = '';
+    document.getElementById('comments').innerHTML = '';
+    document.getElementById('stats').innerHTML = '';
+    // Put all the data back on the map 
+    map.getSource('all').setData(allData);
+
+}
+
+// ------------------------------------------------ GET THE DIFFERENCE BETWEEN TWO TIMESTAMPS
+function getTimeDiff(t1, t2){
+    // get the first timestamp
+    var date1 = new Date(t1)
+    
+    // get the last timestamp
+    var date2 = new Date(t2)
+
+    // To calculate the time difference of two dates
+    // https://www.geeksforgeeks.org/how-to-calculate-the-number-of-days-between-two-dates-in-javascript/
+    var diff = date2.getTime() - date1.getTime(); 
+
+    // To calculate the no. of minutes between two dates 
+    var mins = diff / (1000 * 3600); 
+    
+    // return the total number of minutes, rounded to nearest day
+    // https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
+    return(Math.round((mins + Number.EPSILON) * 100)/100)
+}
+
+// ------------------------------------------------ GET THE TOTAL DISTANCE IN LIST OF COORDS
+function getDist(coords){
+    // variables for total and current distance
+    var totDist = 0;
+    var curDist = 0;
+    
+    // loop through all coordinates points  
+    for(var i=0; i<(coords.length-1); i++){
+        
+        // calculate distance between current point and last point
+        curDist = turf.distance(coords[i], coords[i+1])
+        
+        // add current distance to previous distances 
+        totDist = (totDist + curDist);
+    }
+    // return total distance, rounded to the nearest km
+    return(Math.round(totDist*100)/100);
+    //return(Math.round(totDist*1000));
+    //return(totDist)
 }
 
 // ------------------------------------------------ ANIMATE THE PATH
@@ -84,6 +131,7 @@ function animatePath(){
     
     // Animate a path 
     if(status=='Animate'){
+        
         // Get a random animal to animate and select the right data 
         var num = Math.floor(Math.random() * Math.floor(allData.features.length));
         document.getElementById('animate').innerHTML= ('Stop'); 
@@ -92,10 +140,6 @@ function animatePath(){
         // Add the timer and animal info style
         aInfo.classList.add('b1')
         aInfo.classList.add('shadow-box')
-        
-        // Add the animal details to the info box 
-        //document.getElementById('comments').innerHTML = allData.features[num].properties.comments
-        //console.log(allData)
         
         // Start with empty line data
         path = {
@@ -110,7 +154,9 @@ function animatePath(){
         // Start with empty point data
         point = {
             'type': 'Feature',
-            'properties': {},
+            'properties': {
+                'diff': 0
+            },
             'geometry': {
                 'type': 'Point',
                 'coordinates': []
@@ -119,10 +165,15 @@ function animatePath(){
         // Set the data source 
         map.getSource('animated').setData(path)
         
+        // Remove the all data layer 
+        map.getSource('all').setData(path)
         
         // Add more coordinates to the list and update the map 
         // Help from: https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/ 
         var i = 0; 
+        var timeDiff = []; 
+        totTime = [];
+        totDist = []; 
         var timer = window.setInterval(function(){
             if(go==true){ // Only run until someone pushes the button again
                if(i<coordinates.length){
@@ -130,17 +181,51 @@ function animatePath(){
                     // Check if the current coordinate is also a true coordinate    
                     for(var j=0; j<trueCoords.length; j++){
                         if(coordinates[i]==trueCoords[j][2]){
+                            
+                            // Get a list of all the times 
+                            timeDiff.push(trueCoords[j][1])
+ 
+                            // Get the time difference 
+                            tlength = timeDiff.length;
+                            
+                            diff = 0; 
+                            if(i>0){ // So that it's not the first one 
+                                diff = getTimeDiff(timeDiff[tlength-2], timeDiff[tlength-1]);
+                                point.properties.diff = diff;
+                                console.log(diff)
+                            }
+                            
+                            total = getTimeDiff(timeDiff[0], timeDiff[tlength-1])
+                            
                             // Set the new data source 
                             point.geometry.coordinates = trueCoords[j][2];
                             map.getSource('point').setData(point);
+                            
                             // Update the time 
                             document.getElementById('time').innerHTML = trueCoords[j][1];
+                            
+                            // Add in the animal info
+                            if(i<5){
+                                document.getElementById('comments').innerHTML = trueCoords[j][3];
+                            }
+                            
+                            // Calculate the total distance 
+                            dist = getDist(path.geometry.coordinates)
+                            // Add the total time and distance 
+                            document.getElementById('stats').innerHTML = dist + ' km in ' + total + ' hours.'
+                            
+                            totTime.push(total)
+                            totDist.push(dist)
+  
                         }
+                        
                     }
-                   
+
                     // Add the new coordinates
                     path.geometry.coordinates.push(coordinates[i]);
                     map.getSource('animated').setData(path);
+                   
+        
                    
                     // Control the zoom
                     //map.setPitch(60);
@@ -153,6 +238,8 @@ function animatePath(){
                     document.getElementById('animate').innerHTML= ('Animate'); 
                     // Remove the data 
                     clearAnimate();
+                    
+                    
                 } 
             }
             else{
@@ -232,20 +319,28 @@ map.on('load', function() {
             'line-cap': 'round'
             },
             'paint': {
-                'line-color': accent,
-                'line-width': 8,
-                'line-blur': 1,
+                //'line-color': '#FF6F59',
+                'line-width': 10,
+                'line-blur': 0.75,
                 //'line-opacity': 0.3,
                 'line-gradient': [
-                'interpolate',
+                    'interpolate',
+                    ['linear'],
+                    ['line-progress'],
+                    0,'rgba(255, 111, 89, 0)',
+                    0.1,'rgba(255, 111, 89, 0.1)',
+                    0.3,'rgba(255, 111, 89, 0.2)',
+                    0.5,'rgba(255, 111, 89, 0.85)',
+                    1,'rgba(255, 111, 89, 1)']
+                    
+                /*'interpolate',
                 ['linear'],
                 ['line-progress'],
-                0,'rgba(24, 67, 17, 0)',
-                0.1,'rgba(24, 67, 17, 0.1)',
-                0.3,'rgba(24, 67, 17, 0.2)',
-                0.5,'rgba(24, 67, 17, 0.4)',
-                1,'rgba(24, 67, 17, 1)']
-                    
+                0,'rgba(0, 79, 45, 0)',
+                0.1,'rgba(0, 79, 45, 0.1)',
+                0.3,'rgba(0, 79, 45, 0.2)',
+                0.5,'rgba(0, 79, 45, 0.4)',
+                1,'rgba(0, 79, 45, 0.85)']  */               
                 
                 /*[
                 'interpolate',
@@ -279,10 +374,13 @@ map.on('load', function() {
         'type': 'circle',
         'source': 'point',
         'paint': {
-            'circle-color': accent,
-            'circle-radius': 10,
-            'circle-opacity': 1
-           // 'circle-opacity-transition': {duration:20}
+            'circle-color': {
+                property: 'diff',
+                stops: [[0.5, accent], [2, '#004F2d']]
+            },
+            'circle-radius': 15,
+            'circle-opacity': 1,
+            'circle-blur':0.3
         }
 
     });
@@ -359,9 +457,6 @@ map.on('load', function() {
 
 // ------------------------------------------------ SET THE NEW DATA SOURCE 
         map.getSource('all').setData(allData);
-
-
-        
 
         // Add animated path of one animal in the dataset 
        function addData(ID){
