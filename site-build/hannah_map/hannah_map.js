@@ -37,7 +37,7 @@ function getLink(div){
         var fill = document.getElementById('description')
         // Decide which data to display 
         if(result == ('Coyotes in Albany')){
-            fill.innerHTML = coyoteInfo;
+            fill.innerHTML = 'Some info about coyotes in here';
             return('hannah_map/coyotes_processed.geojson');
         }
         if(result == ('Snakes in Memphis')){
@@ -59,7 +59,7 @@ function clearAnimate(){
     // Empty the timer div 
     document.getElementById('time').innerHTML = '';
     // Clear the popup boxes
-    document.getElementById('animal-info').classList.remove('b1')
+    document.getElementById('animal-info').classList.remove('bg-light')
     document.getElementById('animal-info').classList.remove('shadow-box')
     // Empty the comments div
     document.getElementById('comments').innerHTML = '';
@@ -121,7 +121,7 @@ function animatePath(){
     if(status=='Stop'){
         document.getElementById('animate').innerHTML= ('Animate'); 
         go = false; // Stop the animation
-        aInfo.classList.remove('b1')
+        aInfo.classList.remove('bg-light')
         aInfo.classList.remove('shadow-box')
     }
     
@@ -134,7 +134,7 @@ function animatePath(){
         coordinates = allData.features[num].geometry.coordinates;
 
         // Add the timer and animal info style
-        aInfo.classList.add('b1')
+        aInfo.classList.add('bg-light')
         aInfo.classList.add('shadow-box')
         
         // Start with empty line data

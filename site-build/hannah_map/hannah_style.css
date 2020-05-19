@@ -5,17 +5,17 @@
     color: white;
     width:200px;
     height: 40px;
-    opacity: 0.8;
+    opacity: 0.89;
     border-style: solid;
     border-width: thin;
     border-width: 1px;
     border-color: #FF6F59;
     margin-top: 10px;
-    display: inline-block;
     text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 .button-h:hover{
-    opacity: 1; 
+    opacity: 0.99; 
     cursor: pointer;
 }
 .small{
@@ -40,13 +40,12 @@
 #aInfo {
     margin-top: 50px;
 }
-.info-overlay{
+.info-overlay-h{
     position: absolute;
     margin: 25px; 
     width: 20%;
     padding: 30px;
     text-align: center;
-    opacity: 0.8;
     display: inline-block;
 }
 .padded{
@@ -64,4 +63,9 @@
     padding: 20px;
     height: 90vh;
     overflow:auto;
+}
+.b-overlay{
+    position: absolute;
+    right: 3%;
+    margin: 20px;
 }
