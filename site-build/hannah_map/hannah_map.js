@@ -5,7 +5,7 @@
 //var accent = '#004F2d'; // Dark green
 var accent = '#FF6F59' // Pink
 var opacity = 0.35; 
-var width = 8; 
+var width = 10; 
 
 // ------------------------------------------------ SET UP THE MAP   
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFoa2VyIiwiYSI6ImNpdHEzcndkajAwYmwyeW1zd2UxdTAwMnMifQ.hYglJOOC0Mhq7xNYOxc6qg'; 
@@ -375,7 +375,7 @@ map.on('load', function() {
                 property: 'diff',
                 stops: [[0.5, accent], [2, '#004F2d']]
             },
-            'circle-radius': 15,
+            'circle-radius': 20,
             'circle-opacity': 1,
             'circle-blur':0.3
         }
