@@ -256,12 +256,36 @@
 
             if (la.length==1) {// if the mouse is inside the Geo polygon , there will a hover and pop up
                 if (la[0].properties['GRIDCODE']!=0){
-                map.setFilter('lahighlight', ['==','ID',la[0].properties['ID']]);
-                mypopup
-                    .setLngLat(e.lngLat)
-                    .setHTML("<h3>" +'Urbanization'+ "</h3>"+ "<br />"+'built-up area: '+la[0].properties['GRIDCODE']+'%')
-                    .addTo(map);
-                }
+                    var data=map.getPaintProperty('uopp','fill-color')[1][1];
+
+                    if (data=='GRIDCODE'){
+                        var ID='ID'
+                    }
+                    else if (data=='gridcode_1'){
+                        var ID='Id_1'
+                    }
+                    else if (data=='gridcode_2'){
+                        var ID='Id_12'
+                    }
+                    else if (data=='gridcode_3'){
+                        var ID='Id_12_13'
+                    }
+                    else if (data=='gridcod_11'){
+                        var ID='Id_12_13_8'
+                    }
+                    else if (data=='gridcod_10'){
+                        var ID='Id_12_13_7'
+                    }
+                    else {
+                        var ID='Id_12_13_'+String(Number(data.substr(9,9))-3)
+                    }
+                    if(la[0].properties[data]!=0){
+                    map.setFilter('lahighlight', ['==', ID, la[0].properties[ID]]);
+                    mypopup
+                        .setLngLat(e.lngLat)
+                        .setHTML("<h3>" + 'Urbanization' + "</h3>" + "<br />" + 'built-up area: ' + la[0].properties[data] + '%')
+                        .addTo(map);
+                }}
                 else {// there will be no hover is not inside the polygon
                     map.setFilter('lahighlight', ['==','NAME','null']);
                     mypopup.remove();
