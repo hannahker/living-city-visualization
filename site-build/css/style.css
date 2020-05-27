@@ -33,6 +33,10 @@ section {
     width: 75%;
     min-height:95vh;
 }
+.mapbox-full{
+    width: 100%;
+    min-height: 95vh;
+}
 .rmap{padding-left: 20px}
 .lmap{padding-right: 20px}
 

@@ -1,4 +1,14 @@
-//Icons made by <a href="https://www.flaticon.com/authors/pause08" title="Pause08">Pause08</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+/*displayWindowSize();
+
+window.addEventListener("resize", displayWindowSize);
+
+function displayWindowSize(){
+    var w = window.innerWidth
+    console.log(w);
+    if(w < 500 ){ 
+     alert("The visualizations on this page aren't optimized for mobile devices. Please view this page on a larger screen!"); 
+    } 
+}*/
 
 
 // ------------------------------------------------ BASIC STYLE ITEMS 
@@ -12,11 +22,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFoa2VyIiwiYSI6ImNpdHEzcndkajAwYmwyeW1zd
 var map = new mapboxgl.Map({
     container: 'map-container2',
     //style: 'mapbox://styles/hannahker/cka393ggw06m71ilam9a36pqn',
-    style: 'mapbox://styles/mapbox/satellite-v9',
+    //style: 'mapbox://styles/mapbox/satellite-v9',
+    style: 'mapbox://styles/hannahker/ckaom3qmp07x71iqpo9ec07ey',
     center: [-73.839349,42.695589], 
     zoom: 10
 });
-
 
 // ------------------------------------------------ ZOOM TO THE COORDINATES 
 function zoomTo(coords){
@@ -26,28 +36,9 @@ function zoomTo(coords){
         return bounds.extend(coord);
         }, new mapboxgl.LngLatBounds(coords[0], coords[0]));
     map.fitBounds(bounds, {
-        padding: 100
+        padding: {top: 100, bottom:100, left: 50, right: 200}
     }); 
 }
-
-// ------------------------------------------------ SELECT THE APPROPRIATE DATA 
-function getLink(div){
-        
-        var result = div.options[div.selectedIndex].text;
-        var fill = document.getElementById('description')
-        // Decide which data to display 
-        if(result == ('Coyotes in Albany')){
-            fill.innerHTML = 'Some info about coyotes in here';
-            return('hannah_map/coyotes_processed.geojson');
-        }
-        if(result == ('Snakes in Memphis')){
-            fill.innerHTML = 'Put some info about urban copperhead snakes here.'
-            return('hannah_map/snakes_processed.geojson');
-        }
-        if(result == ('Fishers in Albany')){
-            return('hannah_map/fishers_processed.geojson');
-        }
-    }
 
 // ------------------------------------------------ CLEAR THE ANIMATION LAYER 
 function clearAnimate(){
@@ -57,16 +48,44 @@ function clearAnimate(){
     point.geometry.coordinates = [];
     map.getSource('point').setData(point); 
     // Empty the timer div 
+    document.getElementById('time').classList.remove('info-h')
+    document.getElementById('time').classList.remove('shadow-box')
     document.getElementById('time').innerHTML = '';
-    // Clear the popup boxes
-    document.getElementById('animal-info').classList.remove('bg-light')
-    document.getElementById('animal-info').classList.remove('shadow-box')
-    // Empty the comments div
-    document.getElementById('comments').innerHTML = '';
-    document.getElementById('stats').innerHTML = '';
     // Put all the data back on the map 
     map.getSource('all').setData(allData);
+    map.getSource('highlight').setData(selected);
+    zoomTo(selected.geometry.coordinates)
 
+}
+
+// ------------------------------------------------ CLEAR THE HIGHLIGHTED LAYER 
+function clearHighlight(){
+    empty = {
+                    'type': 'Feature',
+                    'properties': {
+                        'comment': '',
+                        'id': ''
+                    },
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': []
+                    }
+                }
+    map.getSource('highlight').setData(empty);
+    document.getElementById('comments').innerHTML = '';
+    document.getElementById('comments').classList.remove('info-h');
+    document.getElementById('comments').classList.remove('shadow-box');
+    
+}
+
+// ------------------------------------------------ CLEAR THE LINE-GRAPH
+function clearGraph(){
+    // Clear the div previously 
+    document.getElementById('graph').innerHTML = '';
+    // Clear the styling 
+    document.getElementById('graph').classList.remove('full'); 
+    // Change status for the next click
+    document.getElementById('line-graph').innerHTML = 'Show graph';
 }
 
 // ------------------------------------------------ GET THE DIFFERENCE BETWEEN TWO TIMESTAMPS
@@ -91,6 +110,12 @@ function getTimeDiff(t1, t2){
 
 // ------------------------------------------------ GET THE TOTAL DISTANCE IN LIST OF COORDS
 function getDist(coords){
+    
+    // If there is only one coordinate set
+    if(coords.length<2){
+        return(0)
+    }
+    
     // variables for total and current distance
     var totDist = 0;
     var curDist = 0;
@@ -112,6 +137,15 @@ function getDist(coords){
 
 // ------------------------------------------------ ANIMATE THE PATH
 function animatePath(){
+    
+    if(ID_Fish == 0){
+        alert("Please select a fisher before viewing the animation.");
+        return;
+    }
+    
+    // Clear the graph 
+    clearGraph();
+    
     var status = document.getElementById('animate').innerHTML;
     var aInfo = document.getElementById('animal-info') // Div for the timer 
     
@@ -121,21 +155,15 @@ function animatePath(){
     if(status=='Stop'){
         document.getElementById('animate').innerHTML= ('Animate'); 
         go = false; // Stop the animation
-        aInfo.classList.remove('bg-light')
-        aInfo.classList.remove('shadow-box')
     }
     
     // Animate a path 
     if(status=='Animate'){
         
-        // Get a random animal to animate and select the right data 
-        var num = Math.floor(Math.random() * Math.floor(allData.features.length));
-        document.getElementById('animate').innerHTML= ('Stop'); 
-        coordinates = allData.features[num].geometry.coordinates;
-
-        // Add the timer and animal info style
-        aInfo.classList.add('bg-light')
-        aInfo.classList.add('shadow-box')
+        document.getElementById('animate').innerHTML= ('Stop');
+        
+        // Get the selected coordinates 
+        coordinates = selected.geometry.coordinates
         
         // Start with empty line data
         path = {
@@ -164,6 +192,9 @@ function animatePath(){
         // Remove the all data layer 
         map.getSource('all').setData(path)
         
+        // Remove the highlight layer 
+        map.getSource('highlight').setData(path)
+        
         // Add more coordinates to the list and update the map 
         // Help from: https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/ 
         var i = 0; 
@@ -188,7 +219,6 @@ function animatePath(){
                             if(i>0){ // So that it's not the first one 
                                 diff = getTimeDiff(timeDiff[tlength-2], timeDiff[tlength-1]);
                                 point.properties.diff = diff;
-                                console.log(diff)
                             }
                             
                             total = getTimeDiff(timeDiff[0], timeDiff[tlength-1])
@@ -198,17 +228,23 @@ function animatePath(){
                             map.getSource('point').setData(point);
                             
                             // Update the time 
-                            document.getElementById('time').innerHTML = trueCoords[j][1];
                             
-                            // Add in the animal info
-                            if(i<5){
-                                document.getElementById('comments').innerHTML = trueCoords[j][3];
-                            }
+                            
+                            var curTime = trueCoords[j][1]; // Current time 
+                            var dist = getDist(path.geometry.coordinates) //Get the distance 
+                            
+                            document.getElementById('time').classList.add('info-h')
+                            document.getElementById('time').classList.add('shadow-box')
+                            //document.getElementById('time').classList.add('stick-top')
+                            
+                            document.getElementById('time').innerHTML = curTime + '<br><br>'+
+                                dist + ' km in ' + total + ' hours.';
+                            //document.getElementById('time').innerHTML = trueCoords[j][1];
                             
                             // Calculate the total distance 
-                            dist = getDist(path.geometry.coordinates)
+                            
                             // Add the total time and distance 
-                            document.getElementById('stats').innerHTML = dist + ' km in ' + total + ' hours.'
+                            //document.getElementById('stats').innerHTML = dist + ' km in ' + total + ' hours.'
                             
                             totTime.push(total)
                             totDist.push(dist)
@@ -221,8 +257,6 @@ function animatePath(){
                     path.geometry.coordinates.push(coordinates[i]);
                     map.getSource('animated').setData(path);
                    
-        
-                   
                     // Control the zoom
                     //map.setPitch(60);
                     zoomTo(path.geometry.coordinates);
@@ -233,9 +267,7 @@ function animatePath(){
                     window.clearInterval(timer);
                     document.getElementById('animate').innerHTML= ('Animate'); 
                     // Remove the data 
-                    clearAnimate();
-                    
-                    
+                    clearAnimate();                
                 } 
             }
             else{
@@ -247,8 +279,116 @@ function animatePath(){
             
         }, 60);
     
+    } 
+    
+}
+
+// ------------------------------------------------ GET DETAILS FOR THE SELECTED DATA
+function getSelected(selected_data){
+    
+    // Get the selected ID
+    var sel_id = selected_data.properties.id;
+    
+    // Get the appropriate subset of the trueCoords list 
+    var filtered = trueCoords.filter(function(obj){return obj[0] == sel_id;});
+    
+    // Get the total duration of the tracking 
+    var totTime = getTimeDiff(filtered[0][1], filtered[filtered.length-1][1])
+    
+    // Get the info for the animal
+    var descr = filtered[0][3].split('kg')[0].concat('kg')    
+    
+    // Get the total distance travelled
+    var allFiltCoords = []
+    for(var i=0; i<filtered.length; i++){
+        allFiltCoords.push(filtered[i][2])
     }
-  
+    var totDist = getDist(allFiltCoords)
+    
+    // Add the styling to the popup 
+    document.getElementById('comments').classList.add('info-h')
+    document.getElementById('comments').classList.add('shadow-box')
+    
+    // Write out the details to the div 
+    document.getElementById('comments').innerHTML = 'You have selected <br><br><b>' + descr + '</b>,<br><br>' + 
+        'who has travelled <b>' + Math.round(totDist) + ' km</b> over <br><b>' + Math.round(totTime/24) + ' days</b>, averaging <br><b>' + Math.round(totDist/(totTime/24)) + ' km/day.</b>';
+
+    // Return the filtered true coords subset 
+    return(filtered)
+    
+}
+
+// ------------------------------------------------ MAKE THE LINE GRAPH
+function makeGraph(){
+    
+    // Clear any ongoing animation
+    go=false; 
+    document.getElementById('animate').innerHTML= ('Animate');
+    
+    // File path for the data to load 
+    load_data = '';
+    
+    // Access the appropriate data
+    if(ID_Fish == 1){load_data = 'hannah_map/Fisher1.csv'}
+    if(ID_Fish == 2){load_data = 'hannah_map/Fisher2.csv'}
+    if(ID_Fish == 3){load_data = 'hannah_map/Fisher3.csv'}
+    if(ID_Fish == 0){
+        alert("Please select a fisher before viewing the chart.");
+        return;
+    }
+    
+    // Load in the data to plot on the chart
+    d3.csv(load_data, function(data){
+    
+        // Either make or clear the graph
+        var status = document.getElementById('line-graph').innerHTML;
+        //console.log(status)
+
+        // Make the graph 
+        if(status=='Show graph'){
+
+            // Add div styling 
+            document.getElementById('graph').classList.add("full");
+            // Create the svg canvas 
+            var svg = dimple.newSvg("#graph", '100%', '100%');
+
+            // With help from: https://stackoverflow.com/questions/17601105/how-do-i-convert-strings-from-csv-in-d3-js-and-be-able-to-use-them-as-a-dataset
+            data.forEach(function(d){ d['Distance'] = +d['Distance']; }); 
+            
+            // Add a title 
+            svg.append("text")
+               .attr("x", 100)
+               .attr("y", 50)
+               .style("text-anchor", "middle")
+               .style("font-family", "sans-serif")
+               .style("font-weight", "bold")
+               .text("Total Distance by Day");
+            
+            // Create the chart
+            var chart = new dimple.chart(svg, data);
+            var x = chart.addCategoryAxis("x", "Day");
+            x.addOrderRule("Date");
+            chart.addMeasureAxis("y", "Distance");
+            var s = chart.addSeries(null, dimple.plot.line);
+            s.lineMarkers = true;
+            chart.draw();
+            
+            // Change status for the next click
+            document.getElementById('line-graph').innerHTML = 'Clear graph';
+
+            return;
+        
+        }
+    
+        // Clear the graph 
+        else if(status=='Clear graph'){
+
+            clearGraph();
+
+            return;
+        }
+        
+    }); // End of load data
     
 }
     
@@ -275,7 +415,7 @@ map.on('load', function() {
             }
     });
 
-    // Add data layer 
+    // Mid
     map.addLayer({
         'id': 'all',
         'type': 'line',
@@ -291,7 +431,55 @@ map.on('load', function() {
             }
 
     });
+    
+    // ------------------------------------------------ ADD THE HIGHLIGHTED LAYER
+    map.addSource('highlight', {
+        'type': 'geojson',
+        'lineMetrics': true,
+        'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': []
+                }
+            }
+    });
+    
+    // Mid
+    map.addLayer({
+        'id': 'hi',
+        'type': 'line',
+        'source': 'highlight',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': accent,
+                'line-width': width,
+                'line-opacity': opacity
+            }
 
+    });
+    
+    // Lightest
+    map.addLayer({
+        'id': 'hi_4',
+        'type': 'line',
+        'source': 'highlight',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#ffd2cf',
+                'line-width': 1,
+                'line-opacity': 1
+            }
+
+    });
+    
 // ------------------------------------------------ ADD THE ANIMATED LAYER 
     map.addSource('animated', {
     'type': 'geojson',
@@ -307,7 +495,7 @@ map.on('load', function() {
     });
 
     // Add data layer 
-    map.addLayer({
+   map.addLayer({
         'id': 'animated',
         'type': 'line',
         'source': 'animated',
@@ -316,10 +504,8 @@ map.on('load', function() {
             'line-cap': 'round'
             },
             'paint': {
-                //'line-color': '#FF6F59',
                 'line-width': 10,
-                'line-blur': 0.75,
-                //'line-opacity': 0.3,
+                'line-blur': 0.5,
                 'line-gradient': [
                     'interpolate',
                     ['linear'],
@@ -327,27 +513,32 @@ map.on('load', function() {
                     0,'rgba(255, 111, 89, 0)',
                     0.1,'rgba(255, 111, 89, 0.1)',
                     0.3,'rgba(255, 111, 89, 0.2)',
-                    0.5,'rgba(255, 111, 89, 0.85)',
-                    1,'rgba(255, 111, 89, 1)']
-                    
-                /*'interpolate',
-                ['linear'],
-                ['line-progress'],
-                0,'rgba(0, 79, 45, 0)',
-                0.1,'rgba(0, 79, 45, 0.1)',
-                0.3,'rgba(0, 79, 45, 0.2)',
-                0.5,'rgba(0, 79, 45, 0.4)',
-                1,'rgba(0, 79, 45, 0.85)']  */               
-                
-                /*[
-                'interpolate',
-                ['linear'],
-                ['line-progress'],
-                0,'#c2edbb',
-                0.1,'#86db78',
-                0.3,'#4ac935',
-                0.5,'#318623',
-                1,'#184311']*/
+                    0.5,'rgba(255, 111, 89, 0.7)',
+                    1,'rgba(255, 111, 89, 0.9)']
+
+            }
+        
+    });
+        
+    // Lightest
+     map.addLayer({
+        'id': 'animated_4',
+        'type': 'line',
+        'source': 'animated',
+        'layout': {
+            'line-join': 'round',
+            'line-cap': 'round'
+            },
+            'paint': {
+                'line-gradient': [
+                    'interpolate',
+                    ['linear'],
+                    ['line-progress'],
+                    0,'rgba(255, 210, 207, 0)',
+                    0.1,'rgba(255, 210, 207, 0.1)',
+                    0.3,'rgba(255, 210, 207, 0.2)',
+                    0.5,'rgba(255, 210, 207, 0.85)',
+                    1,'rgba(255, 210, 207, 1)']
             }
 
     });
@@ -380,24 +571,16 @@ map.on('load', function() {
             'circle-blur':0.3
         }
 
-    });
-    
-// ------------------------------------------------------------------------------------------------ 
-// WHEN THE USER SELECTS AN OPTION
-// ------------------------------------------------------------------------------------------------ 
-    document.getElementById("animals").onchange = function() {
-        
-        // Cancel any ongoing animation
-        go=false; 
-        document.getElementById('animate').innerHTML= ('Animate');
-        
-    tomap = getLink(document.getElementById("animals"))
+    });   
         
 // ------------------------------------------------------------------------------------------------ 
 // WHEN THE DATA LOADS 
 // ------------------------------------------------------------------------------------------------    
     // ** help from class tutorial: example here https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
-    d3.json(tomap, function(err, data) {         
+    d3.json('hannah_map/fishers_processed.geojson', function(err, data) { 
+        
+        // Variables to check if the user has selected a fisher yet
+        ID_Fish = 0;
             
         if (err) throw err;
 
@@ -421,7 +604,7 @@ map.on('load', function() {
             }
 
         zoomTo(allCoords)
-        
+
 // ------------------------------------------------ RESTRUCTURE ALL THE DATA 
         // Add all the data to the map
         allData = {
@@ -432,17 +615,24 @@ map.on('load', function() {
         // Loop through all the ids 
         for(var j=0; j<unique.length; j++){
 
-            var coordinates = []  
+            var coordinates = [] 
+            var com = ""
+            var id = ""
 
             for(var i=0; i<data.features.length; i++){
                 if(data.features[i].properties.ID == unique[j]){
+                    com = data.features[i].properties.comments
+                    id = data.features[i].properties.ID
                     coordinates.push(data.features[i].geometry.coordinates)
                 }
             }
             // Define the data source 
             movement = {
                     'type': 'Feature',
-                    'properties': {},
+                    'properties': {
+                        'comment': com,
+                        'id': id
+                    },
                     'geometry': {
                         'type': 'LineString',
                         'coordinates': coordinates
@@ -451,96 +641,60 @@ map.on('load', function() {
             // Add to the whole dataset 
             allData.features.push(movement)
         }
-
 // ------------------------------------------------ SET THE NEW DATA SOURCE 
         map.getSource('all').setData(allData);
+        
+// ------------------------------------------------------------------------------------------------ 
+// WHEN THE USER SELECTS AN OPTION
+// ------------------------------------------------------------------------------------------------ 
+        document.getElementById("animals").onchange = function() {
+            
+            // Clear the graph 
+            clearGraph();
+        
+            // Cancel any ongoing animation
+            go=false; 
+            document.getElementById('animate').innerHTML= ('Animate');
 
-        // Add animated path of one animal in the dataset 
-       function addData(ID){
-            // Define the layer name 
-            layerid = 'animals';
-
-            // Get just the coordinates for a selected animalID       
-            var coordinates = []  
-            for(var i=0; i<data.features.length; i++){
-                if(data.features[i].properties.ID == ID){
-                    coordinates.push(data.features[i].geometry.coordinates)
-                }
+            // Get the text from the select an animal button
+            var div = document.getElementById("animals")
+            var result = div.options[div.selectedIndex].text;
+            
+            // Reset the selection if...
+            if(result=='Select an animal'){
+                ID_Fish = 0;
+                clearHighlight();
+                zoomTo(allCoords);
+                return;
             }
+            // Otherwise select one of the animals 
+            
+                
+            // Get the number to select 
+            result = result.split(" ")[1]
 
-            // Define the data source 
-            movement = {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': coordinates
-                    }
-                }
+            // Select the appropriate fisher from the feature collection
+            selected = allData.features[result-1]
 
-            // Add data source 
-            map.addSource(layerid, {
-                'type': 'geojson',
-                'lineMetrics': true,
-                'data': movement
-            });
+            // Zoom to the selected fisher 
+            zoomTo(selected.geometry.coordinates)   
 
+            // Set the source for the highlighted data
+            map.getSource('highlight').setData(selected);
 
-            // Add data layer 
-            map.addLayer({
-                'id': layerid,
-                'type': 'line',
-                'source': layerid,
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                    },
-                    'paint': {
-                        'line-color': accent,
-                        'line-width': 10,
-                        'line-opacity': 0.6,
-                        'line-gradient': [
-                        'interpolate',
-                        ['linear'],
-                        ['line-progress'],
-                        0,
-                        '#c2edbb',
-                        0.1,
-                        '#86db78',
-                        0.3,
-                        '#4ac935',
-                        0.5,
-                        '#318623',
-                        0.7,
-                        '#184311',
-                        1,
-                        '#000000'
-                        ]
-                    }
+            // Show the selected info 
+            getSelected(selected)
 
-            });
+            //ID_test = selected.properties.id;
+            ID_Fish = result;
+                
 
-            // Add more coordinates to the list and update the map 
-            // Help from: https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/ 
-            var i = 0; 
-            var timer = window.setInterval(function(){
-                if(i<coordinates.length){
-                    movement.geometry.coordinates.push(coordinates[i]);
-                    map.getSource(layerid).setData(movement);
-                    
-                    // Check with the true coordinates
-                    //for(var )
-                    
-                    i++;
-                } else{
-                    window.clearInterval(timer);
-                }
-            }, 500);
-
-        } // End of the addData function - DON'T THINK WE NEED THIS FUNCTION ANYMORE    
-
-        });  // End of data load 
+                
+            
+            
             
         } // End of function on button change 
+        
+    });  // End of data load 
         
 }); // End of on map load 
