@@ -144,8 +144,8 @@ button {
 #features {
     top: 0;
     right: 0;
-    width: 25vh;
-    height: 100px;
+    width: 380px;
+    height: 150px;
 }
 
 .mapboxgl-popup {
@@ -333,12 +333,15 @@ button {
 #charttitle {
     font: bold 16px Arial, sans-serif;
 }
+
+/*
 #features {
     width: 25%;
     margin-left: 0%;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    overflow-y: scroll;
 }
+
+ */
 section {
     padding: 50px 0px;
     line-height: 25px;

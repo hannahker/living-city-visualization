@@ -110,7 +110,13 @@
                 <section id="China" style="position: relative; top: -5%; height: 600px" class="active">
                 <h5>China</h5>
                 <p>Most habitats including likely CH and potential CH are distributed at west and north west of China.  It can be seen that high urbanization cities are located at middle and east of China, and these areas are far away or surrounding by habitat. </p><p><a href="https://chiculture.org.hk/en/china-today/1345">'Clear waters and green mountains are as good as mountains of gold and silver'</a>
-                said by president Xi. Government restrict the land development in habitats, and many industry has to be moved to other areas.</p><p>Therefore, urbanization is far way from habitats or surrounding them.</p>
+                said by president Xi. Government restricts the land development in habitats, and many industries have to be moved to other areas.</p>
+                </section>
+
+                <section id="Nanchang" style="position: relative; top: -5%; height: 400px">
+                    <h5>Nanchang(China)</h5>
+                    <p>During the urbanisation from 1950 to 2017, Nanchang developed the urban area in the south part of the city. The habitat at north-west of the city is Panyang Lake,
+                        and Nanchang’s developed the urban area in the opposite direction to the habitat.</p>
                 </section>
 
                 <section id="UK" class='lead' style="position: relative; top: -5%;height: 500px">
@@ -118,12 +124,19 @@
                     <p>The habitats in UK are located at north of England and Scotland. Different from China, cities with low and middle urbanization are inside of habitats.</p><p>For instance, in Southampton and Bristol, there are some area with 5%-20% urbanization index inside of habitats. By contrast, some big cities like London and Birmingham are still far aways from habits, which is similar to China.</p>
                 </section>
 
-                <section id="USA" style="position: relative; top: 0%">
+                <section id="USA" style="position: relative; top: -5%;height: 400px">
                     <h5>USA</h5>
-                    <p>Likely CH is widely distributed at west part of the USA, while potential CH is at East of the USA. Compared with China and UK, some cities with high urbanization are inside of habitat.</p><p>
-                    In the west part of the USA, some big cities San Francisco and Los Angeles are surrounding by likely CH. In the south part, New orleans and Nashville are inside of likely and potential CH.</p><p>The possible reason leading to the difference among these three counties is urbanization time. The urbanization of China begin from reform and opening in the 1980s which is much later than UK and the USA. In this case, China can choose cities area far away from habitats. However, UK and the USA urbanization is earlier than China, and government in that time may not realise that. Meanwhile, these cities in the west of the USA are developed during <a href="https://www.history.com/topics/westward-expansion">Westward Movement</a> (1800s-1900s), the cities were built sense easy to develop some industries in the habitat in that time.</p>
+                    <p>Likely CH is widely distributed at west part of the USA, while potential CH is at East of the USA. Compared with China and UK, some cities with high urbanization are inside of habitat.</p>
                 </section>
 
+                <section id="San Francisco" style="position: relative; top: -5%;height: 400px">
+                    <h5>San Francisco and Los Angeles (USA)</h5>
+                    <p>In the west part of the USA, some big cities San Francisco and Los Angeles are surrounding by likely CH. In the south part, New orleans and Nashville are inside of likely and potential CH.</p>
+                </section>
+                <section id="Compare" style="position: relative; top: 0%">
+                    <h5>Comparision</h5>
+                    <p>The possible reason leading to the difference among these three counties is urbanization time. The urbanization of China begin from reform and opening in the 1980s which is much later than UK and the USA. In this case, China can choose cities area far away from habitats. However, UK and the USA urbanization is earlier than China, and government in that time may not realise that. Meanwhile, these cities in the west of the USA are developed during <a href="https://www.history.com/topics/westward-expansion">Westward Movement</a> (1800s-1900s), the cities were built sense easy to develop some industries in that time.</p>
+                </section>
                 <!-------------------->
                 <script>
 
@@ -132,11 +145,23 @@
                             center: [117, 30],
                             zoom: 3
                         },
+                        'Nanchang':{
+                            center: [117, 29],
+                            zoom: 7
+                        },
                         'UK':{
                             center:[-2,53],
                             zoom:5
                         },
                         'USA':{
+                            center:[-98,35],
+                            zoom:3.5
+                        },
+                        'San Francisco':{
+                            center:[-120,35],
+                            zoom:5.5
+                        },
+                        'Compare':{
                             center:[-98,35],
                             zoom:3.5
                         }
@@ -170,7 +195,7 @@
                     function isElementOnScreen(id) {
                         var element = document.getElementById(id);
                         var bounds = element.getBoundingClientRect();
-                        return bounds.top < window.innerHeight && bounds.bottom > 220;
+                        return bounds.top < window.innerHeight && bounds.bottom > 260;
                     }
                 </script>
                 <!-- PUT SIDEBAR HERE -->

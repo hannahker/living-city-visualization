@@ -12,15 +12,37 @@
     <script src='https://api.mapbox.com/mapbox.js/plugins/turf/v3.0.11/turf.min.js'></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.2/mapbox-gl-geocoder.min.js"></script>
 
+
 </head>
 
 <body>
+<script src="JS/playButton.js"></script>
 <div id="map"></div>
-<div class="map-overlay" id="title">
+<div class='map-overlay' id="features">
+    <div class='map-overlay-inner'>
+        <h2 id="laname">Global urbanization and <br>Critical habitats</h2>
+        <div><button class="triangle-down" onclick="minusDate()" style="top: 50px"></button></div>
+        <div><button class="play" onclick="autoPlay()" id="autoPlay"style="top: 50px"></button></div>
+        <div><button class="triangle-up" onclick="addDate()"style="top: 50px"></button></div>
+        <table><tr><td>
+            <input id='slider' type='range' min='0' max='11' step='1' value='0' list='tickmarks' />
+            <datalist id="tickmarks">
+                <option value="0" label="1950"> <option value="1"> <option value="2"> <option value="3"> <option value="4">
+                <option value="5" label="2007"> <option value="6"> <option value="7"> <option value="8"> <option value="9">
+                <option value="10" label="2015"> <option value="11">
 
+            </datalist>
+        </td>
+            <td>
+                <label id='date' style="font-size: 20px">1950</label>
+            </td>
+        </tr></table>
         <p class="credit">Urbanization data: <a href="https://themasites.pbl.nl/tridion/en/themasites/hyde/download/index-2.html">History Database of the Global Environment</a>
-            <br>Habitats data: <a href="https://data.unep-wcmc.org/datasets/44">Ocean Data Viewer</a>
+            Habitats data: <a href="https://data.unep-wcmc.org/datasets/44">Ocean Data Viewer</a>
         </p>
+    </div>
+</div>
+
 
 </div>
 <div class="map-overlay" id='legendHabitat' ><h5 >Habitat</h5></div>
@@ -47,11 +69,12 @@
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiY29ubm9yNjY2IiwiYSI6ImNrNWk1aDEwbDA4MWgzbW5wZGJocGpscW4ifQ.OixjWYY1xhduPq7A8swzPw';
 
-    var currentLegend=document.getElementById('legend');
+    var dates=['1950','1970','1990','2001','2003','2005','2007','2009','2011','2013','2015','2017'];
+
 
     var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/connor666/cka70k1kh0jdp1it7xqf9xfip',
+        style: 'mapbox://styles/connor666/ckap55u5f3wcy1iqve5n8zhxc',
         center: [117, 30],
         zoom: 3
     });
@@ -65,7 +88,36 @@
         clearOnBlur:Boolean(true),
         types:'country,place',
     });
-    // add Geocoder to map
+    function setDate(date) {// the function is to change the date and the fill color data in the slider box
+
+        document.getElementById('date').textContent = dates[date];
+        var pp = map.getPaintProperty('uopp', 'fill-color');
+        var po=map.getPaintProperty('uopp','fill-opacity')
+
+
+        console.log(date);
+        if (date=='11'){
+            pp[1][1] = 'GRIDCODE';
+            po[1][1] = 'GRIDCODE'
+        }
+        else if (date=='0'){
+            pp[1][1] = 'gridcod_11'
+            po[1][1] = 'gridcod_11'
+        }
+        else if (date=='1'){
+            pp[1][1] = 'gridcod_10'
+            po[1][1] = 'gridcod_10'
+        }
+        else {
+            pp[1][1] = 'gridcode_'+String(11-Number(date))
+            po[1][1] = 'gridcode_'+String(11-Number(date))
+        }
+        console.log(pp)
+        map.setPaintProperty('uopp', 'fill-color', pp);
+        map.setPaintProperty('uopp', 'fill-opacity', po);
+    }
+
+        // add Geocoder to map
     document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
     map.on('load', function() {
 
@@ -133,18 +185,18 @@
             type: 'fill',
             source: {
                 type: 'vector',
-                url: 'mapbox://connor666.82g4ngfj' // Your Mapbox tileset Map ID
+                url: 'mapbox://connor666.ckz1854c' // Your Mapbox tileset Map ID
             },
 
-            'source-layer': '100_urban-1gp56j', // name of tilesets
+            'source-layer': 'uoppData-ck1ikc', // name of tilesets
             'layout': {
                 'visibility': 'visible'
             },
             paint: {
                 'fill-color': ["step",
-                    ["get","GRIDCODE"],"#ffeda0",0,"#fed976",20,"#feb24c",40,"#fc4e2a",60,"#e31a1c",80,"#bd0026"],
+                    ["get","gridcod_11"],"#ffeda0",0,"#fed976",20,"#feb24c",40,"#fc4e2a",60,"#e31a1c",80,"#bd0026"],
                 'fill-opacity': ["step",
-                    ["get","GRIDCODE"],0.0,2,0.6,20,0.6],
+                    ["get","gridcod_11"],0.0,2,0.6,20,0.6],
             },
 
         });
@@ -154,9 +206,9 @@
             type: 'line',
             source: {
                 type: 'vector',
-                url: 'mapbox://connor666.82g4ngfj' // Your Mapbox tileset Map ID
+                url: 'mapbox://connor666.ckz1854c' // Your Mapbox tileset Map ID
             },
-            'source-layer': '100_urban-1gp56j', // name of tilesets
+            'source-layer': 'uoppData-ck1ikc', // name of tilesets
             'layout': {
                 'visibility': 'visible'
             },
@@ -183,6 +235,10 @@
 
         var mypopup = new mapboxgl.Popup({offset:[120,50],closeButton: false});// Creat pop up
 
+        document.getElementById('slider').addEventListener('input', function(e) {// Control the slider
+            var date = parseInt(e.target.value);
+            setDate(date);
+        });
         map.on('mouseenter', 'uopp', function () {
             map.getCanvas().style.cursor = 'pointer';
         });
@@ -200,12 +256,36 @@
 
             if (la.length==1) {// if the mouse is inside the Geo polygon , there will a hover and pop up
                 if (la[0].properties['GRIDCODE']!=0){
-                map.setFilter('lahighlight', ['==','ID',la[0].properties['ID']]);
-                mypopup
-                    .setLngLat(e.lngLat)
-                    .setHTML("<h3>" +'Urbanization'+ "</h3>"+ "<br />"+'built-up area: '+la[0].properties['GRIDCODE']+'%')
-                    .addTo(map);
-                }
+                    var data=map.getPaintProperty('uopp','fill-color')[1][1];
+
+                    if (data=='GRIDCODE'){
+                        var ID='ID'
+                    }
+                    else if (data=='gridcode_1'){
+                        var ID='Id_1'
+                    }
+                    else if (data=='gridcode_2'){
+                        var ID='Id_12'
+                    }
+                    else if (data=='gridcode_3'){
+                        var ID='Id_12_13'
+                    }
+                    else if (data=='gridcod_11'){
+                        var ID='Id_12_13_8'
+                    }
+                    else if (data=='gridcod_10'){
+                        var ID='Id_12_13_7'
+                    }
+                    else {
+                        var ID='Id_12_13_'+String(Number(data.substr(9,9))-3)
+                    }
+                    if(la[0].properties[data]!=0){
+                    map.setFilter('lahighlight', ['==', ID, la[0].properties[ID]]);
+                    mypopup
+                        .setLngLat(e.lngLat)
+                        .setHTML("<h3>" + 'Urbanization' + "</h3>" + "<br />" + 'built-up area: ' + la[0].properties[data] + '%')
+                        .addTo(map);
+                }}
                 else {// there will be no hover is not inside the polygon
                     map.setFilter('lahighlight', ['==','NAME','null']);
                     mypopup.remove();
