@@ -168,7 +168,7 @@
                     };
                     setTimeout(function () {
                         yufumap=document.getElementById('yufumap').contentWindow['map'];
-                    },1000);
+                    },1000); // if u cannot load this map successfully, please increase the waiting time
 
                     features.onscroll = function() {
                         var chapterNames = Object.keys(chapters);
@@ -266,7 +266,7 @@
         <div class=flex>
 
             <div class='infobox-h'>
-                <h3>Reptile</h3>
+                <h5>Reptile</h5>
                 <p>Reptiles exist today as animals such as the  turtles, crocodilians, snakes, amphisbaenians, lizards, tuatara, and including extinct non-avian dinosaurs. today,the study of reptiles is referred to as herpetology, which combine the modern amphibians and traditional reptile.. as <a href=https://www.arc-trust.org >amphibian and reptile conservation </a> mentioned, reptiles suffered declines in UK during the 20th century because the destruction, degradation and fragmentation of habitat by human().reptile has the limited dispersal abilities especially the many habitats isolated now. therefore, reptiles vulnerable to habitat quality and loss or degradation of habitats. today,the data that collected the data by National Amphibian and Reptile Recording Scheme and Amphibian and Reptile Conservation in NBA websites provide the reptile location from 1904 to 2014.</p>
 
                 <h5>Introduction of map</h5>
@@ -294,7 +294,14 @@
                 
                 <!-------------------->
             </div>
-           <div class='infobox'><h3>Some other map</h3><p class="lead">Here we can put a description of this map and why we are including it in this work.</p></div>       
+           <div class='infobox-h'><h5>Birds in Los Angeles</h5>
+               <p>Birds Living Environment in Los Angeles
+                   Birds are one of the most frequent of urban wildlife encountered by people. But with the rapid urban expansion, many bird species have suffered heavily population decline due to landscapes change and habitat loss. According to
+                   <a href="https://ca.audubon.org/birds-0">Audubon</a>, more than 600 bird species that have been spotted in California make up about two-thirds of all birds species in North America. And Los Angeles leads all U.S. counties in nationwide bird count.
+                   <h5>Map Introduction</h5>
+                    This visualization map includes two parts. The first is the heat map of observed birds data. The heat map color depends on data density, areas of concentration where many points are clustered closely together were painted in purple and the marginal area were painted in green. And the map contains two filters. The first filter is bird species, and the second filter is season, users can choose two filters together to present specifics bird species’ heat map in summer or in winter.
+                   The second part is the point map of dead birds. Red points represent dead birds, and orange points represent bird-window collision which lead to birds death.
+               <br><br>Data is obtained from <a href="https://www.inaturalist.org">iNaturalist</a></p></div>
         </div>      
     </div>
     </div>
