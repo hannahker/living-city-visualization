@@ -271,7 +271,7 @@ function getSelected(selected_data){
     document.getElementById('comments').classList.add('shadow-box')
     
     // Write out the details to the div 
-    document.getElementById('comments').innerHTML = 'You have selected <br><br><b>' + descr + '</b>,<br><br>' + 
+    document.getElementById('comments').innerHTML = 'You have selected <br><b>' + descr + '</b>,<br><br>' + 
         'who has travelled <b>' + Math.round(totDist) + ' km</b> between <br><b>' + start + '</b> and<br><b>' +
         end + '</b>';
 
