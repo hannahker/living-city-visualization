@@ -1,0 +1,290 @@
+<!DOCTYPE html> <html>
+<head>
+    <meta charset='utf-8' />
+    <title>LA Bird Observation</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js"></script>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css" rel="stylesheet" />
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+h1 {
+  font-size: 20px;
+  line-height: 25px;
+}
+
+h2 {
+  font-size: 17px;
+  line-height: 15px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 12px;
+  line-height: 15px;
+  margin-bottom: 10px;
+}
+    
+h4 {
+  font-size: 10px;
+  line-height: 0px;
+  margin-bottom: 5px;
+}
+
+#console {
+  position: absolute;
+  width: 320px;
+  margin: 10px;
+  padding: 10px 20px;
+    background-color: white;}
+ 
+.session {
+  margin-bottom: 10px;
+}
+    
+.row {
+  height: 15px;
+  width: 100%;
+}
+
+.colors {
+  background: linear-gradient(to right, #2dc4b2, #3bb3c3, #669ec4, #8b88b6, #a2719b, #aa5e79);
+  margin-bottom: 5px;
+}
+
+.label {
+  width: 15%;
+  display: inline-block;
+    text-align: center;}
+
+  
+    </style>
+</head>
+    
+<body>
+<div id='map'></div>
+<div id='console'>
+      <h1>Los Angeles Birds Observation</h1>
+        <h2 class='txt-m txt-bold mb6'>Birds Observation:</h2>
+
+<div class='session'> 
+    
+<div class='session' id='filters2'>      
+                <label><h3>Species</h3></label>
+                <select id='layer' name='layer'>
+                    <option value='All' >ALL</option>
+                    <option value='BP' selected>Brown Pelican</option>
+                    <option value='CG'>Canada Goose</option>
+                    <option value='CT'>California Towhee</option>
+                    <option value='GBH'>Great Blue Heron</option>
+                    <option value='HF'>House Finch</option>
+                    <option value='HS'>House Sparrow</option>
+                    <option value='M'>Mallard</option>
+                    <option value='MD'>Mourning Dove</option>
+                    <option value='NM'>Northern Mockingbird</option>
+                    <option value='RH'>Red-tailed Hawk</option>
+                    <option value='WCS' >White-crowned Sparrow</option>
+                    <option value='WG'>Western Gull</option>
+                </select>
+            </div>
+    
+<h3>Season</h3>
+<div class='session' id='filters'>
+    <input id='Summer' type='radio' name='toggle' value='Summer' checked='checked'>
+    <label for='Summer'>Summer</label>
+    <input id='Winter' type='radio' name='toggle' value='Winter'>
+    <label for='Winter' >Winter</label>
+  </div>
+  
+<h3>Density</h3>
+<div class='row colors'>
+</div>
+<div class='row labels'>
+    <div class='label'>0</div>
+    <div class='label'>0.2</div>
+    <div class='label'>0.6</div>
+    <div class='label'>0.4</div>
+    <div class='label'>0.8</div>
+    <div class='label'>1</div>
+  </div>
+
+      
+<h2>Bird Death:</h2>
+<h4><br><label >
+<input type="radio" name="layers" id="layer17" value="DeadBird" checked>         
+<span style="color: hsl(15, 80%, 60%)">Dead Birds</span>
+</label></br></h4>
+<h4><br><label >
+<input type="radio" name="layers" id="layer18" value="Bird-Window" checked>
+<span style="color: hsl(43, 80%, 50%)">Bird-Window Collision</span>
+</label></br></h4>
+    
+</div>    
+</div>
+    
+    
+<script>
+ 
+mapboxgl.accessToken = 'pk.eyJ1IjoiamluZ3dlbmgiLCJhIjoiY2s1cDZrMWFkMGRuczNrcWw5MGNmdGRxayJ9.tByuAyF6AJYnAJHtvgSBLQ';
+
+var map = new mapboxgl.Map({
+		container: 'map', // container id
+		style: 'mapbox://styles/jingwenh/ckad8yhv307kt1io424urvb3s', // stylesheet location
+		center: [-118.381, 34.1393], // starting position [lng, lat]
+		zoom: 8.5 // starting zoom
+	});
+    
+map.on('load', function() {   
+
+var filterSeason = ['==', ['number', ['get', 'season']], 1];
+var filterName = ['==', ['string', ['get', 'name']], 'BP'];
+         
+map.addControl(new mapboxgl.NavigationControl());
+   
+map.addLayer({
+id: 'bird',
+type: 'heatmap',
+source: {type: 'vector',
+        url: 'mapbox://jingwenh.5u5x0z7e' // Your Mapbox tileset Map ID
+        },
+        'source-layer': 'Birds-4fc6ti', 
+paint: {
+'heatmap-weight': 1,
+'heatmap-intensity': 1,
+'heatmap-color': [
+'interpolate',
+['linear'],
+['heatmap-density'],
+0, 'rgba(236,222,239,0)',
+0.2,'rgb(45,196,178)',
+0.4, 'rgb(102,158,196)',
+0.6, 'rgb(139,136,182)',
+0.8, 'rgb(162,113,155)',
+1,'rgb(170,94,121)'
+],
+'heatmap-radius': {
+stops: [
+[5, 10],
+[15, 20]
+]
+},
+'heatmap-opacity': 1
+},
+    filter: ['all', filterSeason, filterName]
+});
+    
+map.addLayer({
+                id: 'DeadBird',
+                type: 'circle',
+                source: {
+                  type: 'vector',
+                  url: 'mapbox://jingwenh.5k3cgdex' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'deadbirds-a13m2g', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                 paint: {
+                    'circle-color': 'hsl(15, 80%, 60%)',
+                    'circle-opacity': 0,
+                    'circle-stroke-width': 0,
+                    'circle-stroke-color': '#000',
+                    'circle-stroke-opacity': 1,
+                    'circle-radius': 4}
+              });
+        
+map.addLayer({
+                id: 'Bird-Window',
+                type: 'circle',
+                source: {
+                  type: 'vector',
+                  url: 'mapbox://jingwenh.3xl41scc' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'bird-window_collision-912i8v', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                 paint: {
+                    'circle-color': 'hsl(43, 80%, 50%)',
+                    'circle-opacity': 0,
+                    'circle-stroke-width': 0,
+                    'circle-stroke-color': '#000',
+                    'circle-stroke-opacity': 1,
+                    'circle-radius': 5}
+              });
+    
+document.getElementById('filters').addEventListener('change', function(e) {
+  var season = e.target.value;
+  // update the map filter
+  if (season === 'Summer') {
+    filterSeason =  ['==', ['number', ['get', 'season']], 1];
+  } else if (season === 'Winter') {
+    filterSeason =  ['==', ['number', ['get', 'season']], 2];
+  } else {
+    console.log('error');
+  }
+  map.setFilter('bird', ['all', filterSeason, filterName]);;
+});    
+ 
+document.getElementById('filters2').addEventListener('change', function(e) {
+  var name = e.target.value;
+  // update the map filter
+if (name === 'All') {
+    filterName = ['!=', ['get', 'name'], 'FALSE'];;
+  } else if (name === 'BP') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Brown Pelican'];
+  }else if (name === 'CG') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Canada Goose'];
+  } else if (name === 'CT') {
+    filterName =  ['==', ['string', ['get', 'name']], 'California Towhee'];
+  }else if (name === 'GBH') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Great Blue Heron'];
+  } else if (name === 'HF') {
+    filterName =  ['==', ['string', ['get', 'name']], 'House Finch'];
+  } else if (name === 'HS') {
+    filterName =  ['==', ['string', ['get', 'name']], 'House Sparrow'];
+  } else if (name === 'M') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Mallard'];
+  } else if (name === 'MD') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Mourning Dove'];
+  }else if (name === 'NM') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Northern Mockingbird'];
+  } else if (name === 'RH') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Red-tailed Hawk'];
+  } else if (name === 'WCS') {
+    filterName =  ['==', ['string', ['get', 'name']], 'White-crowned Sparrow'];
+  } else if (name === 'WG') {
+    filterName =  ['==', ['string', ['get', 'name']], 'Western Gull'];
+  } else {
+    console.log('error');
+  }
+  map.setFilter('bird', ['all', filterSeason, filterName]);;
+  });
+    
+document.getElementById("layer17").addEventListener("click", function(){
+map.setPaintProperty('DeadBird','circle-opacity',0.95);
+map.setPaintProperty('Bird-Window','circle-opacity',0);
+});
+
+document.getElementById("layer18").addEventListener("click", function(){
+map.setPaintProperty('DeadBird','circle-opacity',0);
+map.setPaintProperty('Bird-Window','circle-opacity',0.95);
+});
+
+});
+    
+</script>
+</body>
+</html>
+
