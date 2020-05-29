@@ -7,28 +7,21 @@ header {
     padding: 34vh 0 100px;
     height:100vh;
 }
-
 .textbox {
     min-height: 100vh;
     padding: 50px 0;
 }
-
 section {
     height: 100vh;
     padding: 150px 0;
 }
-
-.green{
-    /*background-color: darkgreen;*/
-    background-color: #004F2d;
-}
+.green{background-color: #004F2d;}
 .b1{background-color: rgba(194, 168, 120, 0.6)}
 .b2{background-color: #6e633d}
 .a1{background-color: #FF6F59}
 
-.flex{
-    display:flex;
-}
+.flex{display:flex;}
+
 .mapbox{
     width: 75%;
     min-height:90vh;

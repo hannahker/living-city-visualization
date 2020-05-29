@@ -213,11 +213,7 @@ function animatePath(){
                             document.getElementById('legend').classList.add('image')
                             document.getElementById('time').classList.add('info-h')
                             document.getElementById('time').classList.add('shadow-box')                            
-                            document.getElementById('time').innerHTML = curTime + '<br><br>'+ dist + ' km in ' + total + ' hours.';
-                            
-                            // Calculate the total distance 
-                            // Add the total time and distance 
-                            //document.getElementById('stats').innerHTML = dist + ' km in ' + total + ' hours.'
+                            document.getElementById('time').innerHTML = '<b>' + curTime + '</b><br><br>'+ dist + ' km in ' + total + ' hours.';
                             
                             totTime.push(total)
                             totDist.push(dist)
