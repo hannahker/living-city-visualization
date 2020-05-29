@@ -1,16 +1,3 @@
-/*displayWindowSize();
-
-window.addEventListener("resize", displayWindowSize);
-
-function displayWindowSize(){
-    var w = window.innerWidth
-    console.log(w);
-    if(w < 500 ){ 
-     alert("The visualizations on this page aren't optimized for mobile devices. Please view this page on a larger screen!"); 
-    } 
-}*/
-
-
 // ------------------------------------------------ BASIC STYLE ITEMS 
 //var accent = '#004F2d'; // Dark green
 var accent = '#FF6F59' // Pink
@@ -235,6 +222,7 @@ function animatePath(){
                             
                             document.getElementById('time').classList.add('info-h')
                             document.getElementById('time').classList.add('shadow-box')
+                            //document.getElementById('legend').setAttribute('display', 'block')
                             //document.getElementById('time').classList.add('stick-top')
                             
                             document.getElementById('time').innerHTML = curTime + '<br><br>'+
@@ -293,7 +281,9 @@ function getSelected(selected_data){
     var filtered = trueCoords.filter(function(obj){return obj[0] == sel_id;});
     
     // Get the total duration of the tracking 
-    var totTime = getTimeDiff(filtered[0][1], filtered[filtered.length-1][1])
+    //var totTime = getTimeDiff(filtered[0][1], filtered[filtered.length-1][1])
+    var start = filtered[0][1].split(" ")[0]
+    var end = filtered[filtered.length-1][1].split(" ")[0]
     
     // Get the info for the animal
     var descr = filtered[0][3].split('kg')[0].concat('kg')    
@@ -311,7 +301,8 @@ function getSelected(selected_data){
     
     // Write out the details to the div 
     document.getElementById('comments').innerHTML = 'You have selected <br><br><b>' + descr + '</b>,<br><br>' + 
-        'who has travelled <b>' + Math.round(totDist) + ' km</b> over <br><b>' + Math.round(totTime/24) + ' days</b>, averaging <br><b>' + Math.round(totDist/(totTime/24)) + ' km/day.</b>';
+        'who has travelled <b>' + Math.round(totDist) + ' km</b> between <br><b>' + start + '</b> and<br><b>' +
+        end + '</b>';
 
     // Return the filtered true coords subset 
     return(filtered)
@@ -568,7 +559,7 @@ map.on('load', function() {
             },
             'circle-radius': 20,
             'circle-opacity': 1,
-            'circle-blur':0.3
+            'circle-blur':0.2
         }
 
     });   
@@ -667,8 +658,6 @@ map.on('load', function() {
                 zoomTo(allCoords);
                 return;
             }
-            // Otherwise select one of the animals 
-            
                 
             // Get the number to select 
             result = result.split(" ")[1]
@@ -686,12 +675,7 @@ map.on('load', function() {
             getSelected(selected)
 
             //ID_test = selected.properties.id;
-            ID_Fish = result;
-                
-
-                
-            
-            
+            ID_Fish = result;            
             
         } // End of function on button change 
         

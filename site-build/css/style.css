@@ -9,8 +9,8 @@ header {
 }
 
 .textbox {
-    height: 100vh;
-    padding: 150px 0;
+    min-height: 100vh;
+    padding: 50px 0;
 }
 
 section {
@@ -31,7 +31,7 @@ section {
 }
 .mapbox{
     width: 75%;
-    min-height:95vh;
+    min-height:90vh;
 }
 .mapbox-full{
     width: 100%;
