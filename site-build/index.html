@@ -78,8 +78,15 @@
             <hr>
             <p class="small">Humans aren’t the only beings that inhabit cities. From <a href='https://www.nydailynews.com/new-york/brooklyn/coyote-spotted-roof-long-island-city-bar-article-1.2167643'>coyotes</a> on rooftops in New York City to <a href='https://www.nhm.ac.uk/discover/mumbais-leopards-caught-on-camera.html'>leopards</a> in the alleys of Mumbai, we share our urban environments with a diverse range of animals. While it may be a nuisance to have racoons knock over your garbage or squirrels steal your lunch, many animals are of <a href='https://content.yardmap.org/learn/the-value-of-wildlife-to-cities/'>great value to cities</a>.</p>
             <p class="small">We must also acknowledge the <a href='https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0154613'>impacts</a> of rapid urbanization on animal habitat loss and fragmentation. We have a responsibility to welcome animals into our urban spaces and design cities that are in harmony with nature. Such efforts are mutually beneficial, as the presence of green space and its accompanying wildlife <a href='https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6277587/'>has been found</a> to enhance our psychological wellbeing.</p>
-            <p class="small">This work aims to reminds its viewers of our wild urban neighbours. Being reminded of the presence of wildlife in urban spaces can encourage us to better integrate the natural and built environments, and preserve biodiversity. This work includes stories from a variety of scales, locations, and time periods, showing how different animals inhabit urban environments all over the world.</p>
+            <p class="small">This work aims to remind its viewers of our wild urban neighbours. Being reminded of the presence of wildlife in urban spaces can encourage us to better integrate the natural and built environments, and preserve biodiversity. This work includes stories from a variety of scales, locations, and time periods, showing how different animals inhabit urban environments all over the world. Throughout this work, we will look at the following four case studies:</p>
             <hr>
+            
+            <div id='icons-2' class='flex'>
+            <div class='icon outline'><img src="media/globe.png" alt="Nature" class="responsive">Urbanization and habitats</div>
+            <div class='icon outline'><img src="media/ferret.png" alt="Nature" class="responsive">Fishers in Albany</div>
+            <div class='icon outline'><img src="media/snake.png" alt="Nature" class="responsive">Reptiles in London</div>
+            <div class='icon outline'><img src="media/bird.png" alt="Nature" class="responsive">Bird in Los Angeles</div>
+        </div>
         </div>
       </div>
     </div>
@@ -233,10 +240,12 @@
                         
                         
                         <div id='time' class='stick-top'></div>
-                        <img src='hannah_map/legend.png' class='image'/>
+                        
                         
                         
                     </div>
+                    <img src='hannah_map/legend.png' id='legend' class='image-s'/>
+                    
 
                     <!-------------------->
                 </div>
@@ -254,6 +263,7 @@
                     <div id='description' class='small'>
                         <h5>What are fishers?</h5><p>A weasel-like mammal, fishers commonly live in coniferous habitats throughout Canada and the northern United States. As described by <a href=https://www.natureconservancy.ca/en/what-we-do/resource-centre/featured-species/mammals/fisher.html>Nature Conservancy Canada</a>, habitat loss and fur trapping in the 19th and 20th centuries significantly reduced their range. Today, in the northeast US, fishers are experiencing a resurgence and are <a href='https://scientistatwork.blogs.nytimes.com/2011/01/25/albanys-urban-weasels/'>adapting to life in urban environments</a>. This data, collected as part of <a href='https://link.springer.com/article/10.1007/s10980-013-9910-0'>a study</a> on corridor-based movement models, provides insight into the daily behaviours of fishers and how they interact with the built environment.</p>
                         <h5>What does this map tell us?</h5><p>We see the movement patterns from three fishers in the winter of 2011. Each fisher has its own habitat range, each of which cover a patchwork of urban green space. Movement is significantly bounded by major roadways, such as the New York State Thruway and the Adirondack Northway. We also see that the fishers are primarily mobile at night. Their movement patterns can largely be characterized by short clusters of localized movement and long-range movement across their habitat range. This insight can be useful in ensuring that new developments in Albany do not encroach on the habitats of these fishers, and can help researchers better understand how the fishers are adapting to life alongside humans.</p>
+                        <p>During the animation, the circular points correspond to the GPS point measurements in the original dataset. The lines connecting these points have been interpolated. The colour of these points indicate the time passed since the previous measurement.</p>
 
                     </div>
                     <div id='details' class='small'></div>
@@ -270,11 +280,13 @@
         <div class=flex>
 
             <div class='infobox-h'>
-                <h5>Reptile</h5>
-                <p>Reptiles exist today as animals such as the  turtles, crocodilians, snakes, amphisbaenians, lizards, tuatara, and including extinct non-avian dinosaurs. today,the study of reptiles is referred to as herpetology, which combine the modern amphibians and traditional reptile.. as <a href=https://www.arc-trust.org >amphibian and reptile conservation </a> mentioned, reptiles suffered declines in UK during the 20th century because the destruction, degradation and fragmentation of habitat by human().reptile has the limited dispersal abilities especially the many habitats isolated now. therefore, reptiles vulnerable to habitat quality and loss or degradation of habitats. today,the data that collected the data by National Amphibian and Reptile Recording Scheme and Amphibian and Reptile Conservation in NBA websites provide the reptile location from 1904 to 2014.</p>
+                <h3>Reptiles in London</h3>
+                <div class='small'>
+                    <p>Reptiles exist today as animals such as the  turtles, crocodilians, snakes, amphibeans, lizards, tuatara, and including extinct non-avian dinosaurs. Today, the study of reptiles is referred to as <a href=https://en.wikipedia.org/wiki/Herpetology>herpetology</a>, which combine the modern amphibians and traditional reptile. As the <a href=https://www.arc-trust.org >Amphibian and Reptile Conservation </a> mentioned, reptiles suffered declines in UK during the 20th century because the destruction, degradation and fragmentation of habitats by humans. Reptile has the limited dispersal abilities especially the many habitats isolated now. Therefore, reptiles are vulnerable to habitat loss or degradation of habitats. This data, collected the data by National Amphibian and Reptile Recording Scheme and Amphibian and Reptile Conservation in <a href=https://nbnatlas.org>NBN Atlas websites</a>, indicates locations of reptile observations from 1904 to 2014.</p>
 
-                <h5>Introduction of map</h5>
-                <p>in this map,we can see the location of the reptiles from 1904 to 2014. firstly，user could draging the time slider to ecplore the changing of location over year. secondly，user can select one of reptile type to explore the distibution.</p>
+                    <h5>Introduction of map</h5>
+                    <p>in this map, we can see the location of the reptiles from 1904 to 2014. The user can drag the time slider to explore the changing of location over year. Secondly，user can select one of reptile type to explore the distibution.</p>
+                </div>
             </div>
             <div id='map-container1' class='mapbox'>
                 <!--------------------> 
@@ -298,14 +310,14 @@
                 
                 <!-------------------->
             </div>
-           <div class='infobox-h'><h5>Birds in Los Angeles</h5>
-               <p>Birds Living Environment in Los Angeles
-                   Birds are one of the most frequent of urban wildlife encountered by people. But with the rapid urban expansion, many bird species have suffered heavily population decline due to landscapes change and habitat loss. According to
-                   <a href="https://ca.audubon.org/birds-0">Audubon</a>, more than 600 bird species that have been spotted in California make up about two-thirds of all birds species in North America. And Los Angeles leads all U.S. counties in nationwide bird count.
-                   <h5>Map Introduction</h5>
-                    This visualization map includes two parts. The first is the heat map of observed birds data. The heat map color depends on data density, areas of concentration where many points are clustered closely together were painted in purple and the marginal area were painted in green. And the map contains two filters. The first filter is bird species, and the second filter is season, users can choose two filters together to present specifics bird species’ heat map in summer or in winter.
-                   The second part is the point map of dead birds. Red points represent dead birds, and orange points represent bird-window collision which lead to birds death.
-               <br><br>Data is obtained from <a href="https://www.inaturalist.org">iNaturalist</a></p></div>
+           <div class='infobox-h'><h3>Birds in Los Angeles</h3>
+                <div class='small'>
+                <h5>Birds Living Environment in Los Angeles</h5>
+                <p>Birds are one of the most frequent of urban wildlife encountered by people. But with the rapid urban expansion, many bird species have suffered heavily population decline due to landscapes change and habitat loss. According to <a href="https://ca.audubon.org/birds-0">Audubon</a>, more than 600 bird species that have been spotted in California make up about two-thirds of all birds species in North America. And Los Angeles leads all U.S. counties in nationwide bird count.</p>
+                <h5>Map Introduction</h5>
+                <p>This visualization map includes two parts. The first is the heat map of observed birds data. The heat map color depends on data density, areas of concentration where many points are clustered closely together were painted in purple and the marginal area were painted in green. And the map contains two filters. The first filter is bird species, and the second filter is season, users can choose two filters together to present specifics bird species’ heat map in summer or in winter. The second part is the point map of dead birds. Red points represent dead birds, and orange points represent bird-window collision which lead to birds death.</p>
+               <br><br>Data is obtained from <a href="https://www.inaturalist.org">iNaturalist</a></div>
+            </div>
         </div>      
     </div>
     </div>
@@ -320,9 +332,11 @@
                 <br><br>
                 <p class='small'>This project was developed by <a href="https://github.com/hannahker">Hannah Ker</a>, <a href="https://github.com/Connor666">Yu Fu</a>, Jingwen Huang, and Wanzhi Xie as part of an assignment for a <a href='https://www.ucl.ac.uk/bartlett/casa/'>CASA</a> digital visualization course. This website was built using a template adapted from <a href='https://startbootstrap.com/previews/scrolling-nav/'>StartBootstrap. </a>Maps are powered by <a href='https://www.mapbox.com/'>Mapbox</a>, with the <a href='https://blog.mapbox.com/mapbox-cali-terrain-style-bea8cd410523'>Cali Terrain</a> styling. Icons are from the designers <a href='https://www.flaticon.com/authors/iconixar'>Iconixar</a>, <a href='https://www.flaticon.com/authors/freepik'>Freepik</a>, and <a href='https://www.flaticon.com/authors/monkik'>Monkik</a> sourced from <a href='https://www.flaticon.com/'>Flaticon</a>. All photos are licensed for free use. </p>
                 
-                <p class='small'>Urbanization data is from the <a href='https://themasites.pbl.nl/tridion/en/themasites/hyde/download/index-2.html'>History Database of the Global Environment</a> and critical habitats data is from the <a href='https://data.unep-wcmc.org/datasets/44'>Global Critical Habitat Screening Layer.</a></p><p class='small'>The movement data from fishers in Albany was accessed from <a href='https://www.movebank.org/cms/movebank-main'>Movebank</a> and was originally collected as part of the following study: <i>LaPoint, S, Gallery P, Wikelski M, Kays R (2013) Animal behavior, cost-based corridor models, and real corridors. Landscape Ecology, v 28 i 8, p 1615–1630. doi:10.1007/s10980-013-9910-0</i>. This data can be accessed from <a href='https://www.datarepository.movebank.org/handle/10255/move.328'>this online repository.</a> 
-                    
-                </p>
+                <p class='small'>Urbanization data is from the <a href='https://themasites.pbl.nl/tridion/en/themasites/hyde/download/index-2.html'>History Database of the Global Environment</a> and critical habitats data is from the <a href='https://data.unep-wcmc.org/datasets/44'>Global Critical Habitat Screening Layer.</a></p><p class='small'>The movement data from fishers in Albany was accessed from <a href='https://www.movebank.org/cms/movebank-main'>Movebank</a> and was originally collected as part of the following study: <i>LaPoint, S, Gallery P, Wikelski M, Kays R (2013) Animal behavior, cost-based corridor models, and real corridors. Landscape Ecology, v 28 i 8, p 1615–1630. doi:10.1007/s10980-013-9910-0</i>. This data can be accessed from <a href='https://www.datarepository.movebank.org/handle/10255/move.328'>this online repository.</a></p>
+                
+                <p class='small'>Data on reptile observations on London is from the <a href='https://nbnatlas.org/'>NBN Atlas</a>.</p>
+                
+                <p class='small'>Bird observation and bird death data from Los Angeles is from the <a href='https://www.inaturalist.org/'>iNaturalist</a> website.</p>
             </div>
           </div>
     </div>

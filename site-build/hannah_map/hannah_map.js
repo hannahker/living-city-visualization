@@ -1,5 +1,8 @@
+// ------------------------------------------------------------------------------------------------ 
+// SETUP
+// ------------------------------------------------------------------------------------------------
+
 // ------------------------------------------------ BASIC STYLE ITEMS 
-//var accent = '#004F2d'; // Dark green
 var accent = '#FF6F59' // Pink
 var opacity = 0.35; 
 var width = 10; 
@@ -15,6 +18,10 @@ var map = new mapboxgl.Map({
     zoom: 10
 });
 
+// ------------------------------------------------------------------------------------------------ 
+// FUNCTIONS
+// ------------------------------------------------------------------------------------------------
+
 // ------------------------------------------------ ZOOM TO THE COORDINATES 
 function zoomTo(coords){
     // zoom to the bounds of the selected data
@@ -23,7 +30,7 @@ function zoomTo(coords){
         return bounds.extend(coord);
         }, new mapboxgl.LngLatBounds(coords[0], coords[0]));
     map.fitBounds(bounds, {
-        padding: {top: 100, bottom:100, left: 50, right: 200}
+        padding: {top: 100, bottom:100, left: 50, right: 230}
     }); 
 }
 
@@ -42,11 +49,14 @@ function clearAnimate(){
     map.getSource('all').setData(allData);
     map.getSource('highlight').setData(selected);
     zoomTo(selected.geometry.coordinates)
-
+    // Clear the legend
+    document.getElementById('legend').classList.remove('image')
+    document.getElementById('legend').classList.add('image-s')
 }
 
 // ------------------------------------------------ CLEAR THE HIGHLIGHTED LAYER 
-function clearHighlight(){
+function clearHighlight(){ 
+    // Empty data
     empty = {
                     'type': 'Feature',
                     'properties': {
@@ -58,11 +68,12 @@ function clearHighlight(){
                         'coordinates': []
                     }
                 }
+    // Set the empty highlight layer 
     map.getSource('highlight').setData(empty);
+    // Clear the content of the comments div and remove from view 
     document.getElementById('comments').innerHTML = '';
     document.getElementById('comments').classList.remove('info-h');
-    document.getElementById('comments').classList.remove('shadow-box');
-    
+    document.getElementById('comments').classList.remove('shadow-box');  
 }
 
 // ------------------------------------------------ CLEAR THE LINE-GRAPH
@@ -118,13 +129,12 @@ function getDist(coords){
     }
     // return total distance, rounded to the nearest km
     return(Math.round(totDist*100)/100);
-    //return(Math.round(totDist*1000));
-    //return(totDist)
 }
 
 // ------------------------------------------------ ANIMATE THE PATH
 function animatePath(){
     
+    // Check if a fisher has been selected yet
     if(ID_Fish == 0){
         alert("Please select a fisher before viewing the animation.");
         return;
@@ -147,38 +157,21 @@ function animatePath(){
     // Animate a path 
     if(status=='Animate'){
         
+        // Change the button text
         document.getElementById('animate').innerHTML= ('Stop');
         
         // Get the selected coordinates 
         coordinates = selected.geometry.coordinates
         
         // Start with empty line data
-        path = {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': []
-            }
-        }
-        
+        path = {'type': 'Feature', 'properties': {}, 'geometry': {'type': 'LineString', 'coordinates': []}}
         // Start with empty point data
-        point = {
-            'type': 'Feature',
-            'properties': {
-                'diff': 0
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': []
-            }
-        }
+        point = {'type': 'Feature', 'properties': {'diff': 0}, 'geometry': {'type': 'Point', 'coordinates': []}}
+        
         // Set the data source 
         map.getSource('animated').setData(path)
-        
         // Remove the all data layer 
         map.getSource('all').setData(path)
-        
         // Remove the highlight layer 
         map.getSource('highlight').setData(path)
         
@@ -214,31 +207,21 @@ function animatePath(){
                             point.geometry.coordinates = trueCoords[j][2];
                             map.getSource('point').setData(point);
                             
-                            // Update the time 
-                            
-                            
                             var curTime = trueCoords[j][1]; // Current time 
                             var dist = getDist(path.geometry.coordinates) //Get the distance 
-                            
+                            document.getElementById('legend').classList.remove('image-s')
+                            document.getElementById('legend').classList.add('image')
                             document.getElementById('time').classList.add('info-h')
-                            document.getElementById('time').classList.add('shadow-box')
-                            //document.getElementById('legend').setAttribute('display', 'block')
-                            //document.getElementById('time').classList.add('stick-top')
-                            
-                            document.getElementById('time').innerHTML = curTime + '<br><br>'+
-                                dist + ' km in ' + total + ' hours.';
-                            //document.getElementById('time').innerHTML = trueCoords[j][1];
+                            document.getElementById('time').classList.add('shadow-box')                            
+                            document.getElementById('time').innerHTML = curTime + '<br><br>'+ dist + ' km in ' + total + ' hours.';
                             
                             // Calculate the total distance 
-                            
                             // Add the total time and distance 
                             //document.getElementById('stats').innerHTML = dist + ' km in ' + total + ' hours.'
                             
                             totTime.push(total)
                             totDist.push(dist)
-  
-                        }
-                        
+                        }  
                     }
 
                     // Add the new coordinates
@@ -246,29 +229,21 @@ function animatePath(){
                     map.getSource('animated').setData(path);
                    
                     // Control the zoom
-                    //map.setPitch(60);
                     zoomTo(path.geometry.coordinates);
                     i++;
                 } 
-                else{
-                    // Stop if someone clicks the button again
+                else{ // Stop if someone clicks the button again
                     window.clearInterval(timer);
                     document.getElementById('animate').innerHTML= ('Animate'); 
-                    // Remove the data 
-                    clearAnimate();                
+                    clearAnimate(); // Remove the data               
                 } 
             }
-            else{
-                // Timeout when the visualization finishes 
+            else{ // Timeout when the visualization finishes 
                 window.clearInterval(timer);
-                // Remove the data 
-                clearAnimate();
-            }
-            
+                clearAnimate(); // Remove the data 
+            }    
         }, 60);
-    
-    } 
-    
+    }    
 }
 
 // ------------------------------------------------ GET DETAILS FOR THE SELECTED DATA
@@ -309,7 +284,7 @@ function getSelected(selected_data){
     
 }
 
-// ------------------------------------------------ MAKE THE LINE GRAPH
+// ------------------------------------------------ MAKE THE BAR CHART
 function makeGraph(){
     
     // Clear any ongoing animation
@@ -338,44 +313,38 @@ function makeGraph(){
         // Make the graph 
         if(status=='Show graph'){
 
-            // Add div styling 
-            document.getElementById('graph').classList.add("full");
-            // Create the svg canvas 
-            var svg = dimple.newSvg("#graph", '100%', '100%');
+            document.getElementById('graph').classList.add("full"); // Add div styling 
+            var svg = dimple.newSvg("#graph", '100%', '100%'); // Create the svg canvas 
 
             // With help from: https://stackoverflow.com/questions/17601105/how-do-i-convert-strings-from-csv-in-d3-js-and-be-able-to-use-them-as-a-dataset
-            data.forEach(function(d){ d['Distance'] = +d['Distance']; }); 
+            data.forEach(function(d){ d['Distance (km)'] = +d['Distance (km)']; }); 
             
             // Add a title 
             svg.append("text")
-               .attr("x", 100)
-               .attr("y", 50)
+               .attr("x", 200)
+               .attr("y", 20)
                .style("text-anchor", "middle")
                .style("font-family", "sans-serif")
                .style("font-weight", "bold")
-               .text("Total Distance by Day");
+               .text("Total Distance Travelled by Day");
             
             // Create the chart
             var chart = new dimple.chart(svg, data);
             var x = chart.addCategoryAxis("x", "Day");
             x.addOrderRule("Date");
-            chart.addMeasureAxis("y", "Distance");
-            var s = chart.addSeries(null, dimple.plot.line);
-            s.lineMarkers = true;
+            chart.addMeasureAxis("y", "Distance (km)");
+            var s = chart.addSeries(null, dimple.plot.bar);
             chart.draw();
             
             // Change status for the next click
             document.getElementById('line-graph').innerHTML = 'Clear graph';
-
             return;
         
         }
     
         // Clear the graph 
         else if(status=='Clear graph'){
-
             clearGraph();
-
             return;
         }
         
@@ -392,7 +361,7 @@ map.on('load', function() {
     map.addControl(new mapboxgl.ScaleControl());
     // Add the zoom controls
     
-// ------------------------------------------------ ADD THE BASE DATA EMPTY LAYER/SOURCE  
+// ------------------------------------------------ ADD THE BASE DATA LAYER 
     map.addSource('all', {
         'type': 'geojson',
         'lineMetrics': true,
@@ -406,7 +375,6 @@ map.on('load', function() {
             }
     });
 
-    // Mid
     map.addLayer({
         'id': 'all',
         'type': 'line',
@@ -437,7 +405,7 @@ map.on('load', function() {
             }
     });
     
-    // Mid
+    // Outside
     map.addLayer({
         'id': 'hi',
         'type': 'line',
@@ -485,7 +453,7 @@ map.on('load', function() {
         }
     });
 
-    // Add data layer 
+    // outside
    map.addLayer({
         'id': 'animated',
         'type': 'line',
@@ -588,7 +556,7 @@ map.on('load', function() {
                     triple.push(data.features[i].properties.ID,
                                 data.features[i].properties.time,
                                 data.features[i].geometry.coordinates,
-                                data.features[i].properties.comments) // **** ONLY WORKS WITH THE FISHER DATA
+                                data.features[i].properties.comments)
                     trueCoords.push(triple)
                 }
                 allCoords.push(data.features[i].geometry.coordinates)
